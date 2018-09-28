@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+    <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="580.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.MedicaSud.app.client.gui.AjouterMaterielController">
+         <bottom>
+   </bottom>
+   <center>
+      <AnchorPane prefHeight="306.0" prefWidth="400.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="idLabel" layoutX="144.0" layoutY="23.0" text="Identfiant">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="138.0" layoutY="57.0" text="Description">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="150.0" layoutY="100.0" text="Marque">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="140.0" layoutY="145.0" text="Date achat">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="128.0" layoutY="187.0" text="Durée garantie">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="141.0" layoutY="229.0" text="Type materiel">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <JFXTextField fx:id="IdentifiantMateriel" layoutX="251.0" layoutY="11.0" />
+            <JFXTextField fx:id="DescriptionMateriel" layoutX="251.0" layoutY="45.0" />
+            <JFXTextField fx:id="MarqueMateriel" layoutX="251.0" layoutY="85.0" />
+            <DatePicker fx:id="DateAchatMateriel" layoutX="252.0" layoutY="143.0" prefHeight="25.0" prefWidth="138.0" />
+            <JFXTextField fx:id="DureeGarantieMateriel" layoutX="251.0" layoutY="172.0" />
+            <JFXComboBox fx:id="TypeMaterielC" layoutX="254.0" layoutY="217.0" prefHeight="25.0" prefWidth="129.0" />
+            <JFXButton fx:id="Enregistrer" layoutX="455.0" layoutY="339.0" onAction="#EnregistrerMateriel" style="-fx-border-color: #4682b4;" text="Enregister" />
+            <Label layoutX="147.0" layoutY="275.0" text="Fournissuer">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <JFXComboBox fx:id="FournisseurMateriel" layoutX="254.0" layoutY="263.0" prefHeight="25.0" prefWidth="129.0" />
+            <JFXButton fx:id="Enregistrer1" layoutX="326.0" layoutY="339.0" onAction="#AffecterUtilisateurMAteriel" style="-fx-border-color: #4682b4;" text="Affetcter utilisateur" />
+            <Hyperlink fx:id="NouveauFournisseur" layoutX="340.0" layoutY="295.0" onAction="#NouveauFournisseurAction" text="Autres" />
+         </children>
+      </AnchorPane>
+   </center>
+   <left>
+   </left>
+   <right>
+   </right>
+   <top>
+         <AnchorPane prefHeight="40.0" prefWidth="24.0" style="-fx-background-color: #4682b4;" BorderPane.alignment="CENTER" />
+   
+   </top>
+      </BorderPane>
+
+    

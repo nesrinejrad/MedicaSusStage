@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="580.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.MedicaSud.app.client.gui.AjouterInterventionMaterielController">
+         <bottom>
+   </bottom>
+   <center>
+      <AnchorPane prefHeight="306.0" prefWidth="400.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="idLabel" layoutX="144.0" layoutY="23.0" text="Identfiant">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="138.0" layoutY="57.0" text="Description">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="138.0" layoutY="100.0" text="Date intervention">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="labelPeriode" layoutX="140.0" layoutY="145.0" text="période">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            
+            <JFXTextField fx:id="IdentifiantIntervention" layoutX="265.0" layoutY="11.0" />
+            <JFXTextField fx:id="DescriptionIntervention" layoutX="265.0" layoutY="45.0" />
+            <DatePicker fx:id="DateIntervention" layoutX="265.0" layoutY="95.0" prefHeight="25.0" prefWidth="138.0" />
+            <JFXTextField fx:id="PeriodeIntervention" layoutX="265.0" layoutY="133.0" />
+            <JFXButton fx:id="Enregistrer" layoutX="428.0" layoutY="288.0" onAction="#EnregistrerIntervetnion" style="-fx-border-color: #4682b4;" text="Enregister" />
+            <Hyperlink fx:id="externe" layoutX="378.0" layoutY="256.0" text="externe" />
+            <Label fx:id="labelMateriel" layoutX="140.0" layoutY="188.0" text="matériel">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <JFXComboBox fx:id="etatIntervention" layoutX="267.0" layoutY="224.0" prefHeight="25.0" prefWidth="140.0" />
+            <Label fx:id="labelEtat" layoutX="140.0" layoutY="236.0" text="état">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+                        <JFXComboBox fx:id="MaterielIntervention" layoutX="264.0" layoutY="176.0" prefHeight="25.0" prefWidth="140.0" />
+         </children>
+      </AnchorPane>
+   </center>
+   <left>
+   </left>
+   <right>
+   </right>
+   <top>
+         <AnchorPane prefHeight="40.0" prefWidth="24.0" style="-fx-background-color: #4682b4;" BorderPane.alignment="CENTER" />
+   
+   </top>
+      </BorderPane>

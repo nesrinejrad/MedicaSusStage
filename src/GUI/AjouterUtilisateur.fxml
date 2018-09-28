@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+    <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="580.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.MedicaSud.app.client.gui.AjouterUtilisateurController">
+         <top>
+               <AnchorPane prefHeight="40.0" prefWidth="24.0" style="-fx-background-color: #4682b4;" BorderPane.alignment="CENTER" />
+         
+         </top>
+         <bottom>
+         </bottom>
+         <center>
+            <AnchorPane prefHeight="306.0" prefWidth="400.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label  fx:id="idLabel" layoutX="144.0" layoutY="32.0" text="Identfiant">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="168.0" layoutY="66.0" text="Nom">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="159.0" layoutY="106.0" text="Prenom">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="131.0" layoutY="154.0" text="Adressse mail">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="136.0" layoutY="207.0" text="Mot de passe">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="170.0" layoutY="250.0" text="Role">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <JFXTextField fx:id="IdentifientText" layoutX="251.0" layoutY="20.0" />
+                  <JFXTextField fx:id="NomText" layoutX="251.0" layoutY="54.0" />
+                  <JFXTextField fx:id="PrenomText" layoutX="251.0" layoutY="94.0" />
+                  <JFXTextField fx:id="AdressemailText" layoutX="251.0" layoutY="142.0" />
+                  <JFXTextField fx:id="MotDePasseText" layoutX="251.0" layoutY="195.0" />
+                  <JFXComboBox fx:id="RoleUtilisateur" layoutX="254.0" layoutY="238.0" prefHeight="25.0" prefWidth="129.0" />
+                  <JFXButton fx:id="Enregistrer" layoutX="457.0" layoutY="312.0" onAction="#EnregistrerUtilisateur" style="-fx-border-color: #4682b4;" text="Enregister" />
+               </children>
+            </AnchorPane>
+         </center>
+                    <left>
+         </left>
+         <right>
+
+         </right>
+      </BorderPane>
+
+    

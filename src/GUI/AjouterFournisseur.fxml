@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+    <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="580.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.MedicaSud.app.client.gui.AjouterFournisseurController">
+         <bottom>
+   </bottom>
+   <center>
+      <AnchorPane prefHeight="306.0" prefWidth="400.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="idLabel" layoutX="144.0" layoutY="23.0" text="Identfiant">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="168.0" layoutY="60.0" text="Nom">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="134.0" layoutY="100.0" text="Adresse mail">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="140.0" layoutY="145.0" text="Adresse">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="128.0" layoutY="187.0" text="téléphone">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <JFXTextField fx:id="IdentifiantFournisseur" layoutX="251.0" layoutY="11.0" />
+            <JFXTextField fx:id="NomFournisseur" layoutX="251.0" layoutY="45.0" />
+            <JFXTextField fx:id="MailFournisseur" layoutX="251.0" layoutY="85.0" />
+            <JFXTextField fx:id="AdresseFournisseur" layoutX="251.0" layoutY="130.0" />
+            <JFXTextField fx:id="TéléphoneFournisseur" layoutX="251.0" layoutY="172.0" />
+            <JFXButton fx:id="Enregistrer" layoutX="373.0" layoutY="251.0" onAction="#EnregistrerFournisseur" style="-fx-border-color: #4682b4;" text="Enregister" />
+         </children>
+      </AnchorPane>
+   </center>
+   <left>
+   </left>
+   <right>
+   </right>
+   <top>
+      <AnchorPane prefHeight="40.0" prefWidth="400.0" style="-fx-background-color: #4682b4;" BorderPane.alignment="CENTER" />
+   </top>
+      </BorderPane>
+
+    

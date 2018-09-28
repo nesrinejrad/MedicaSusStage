@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.MedicaSud.app.client.gui.Accueil_clientController">
+   <left>
+      
+   </left>
+   <bottom>
+   </bottom>
+   <center>
+   <AnchorPane prefHeight="235.0" prefWidth="698.0" BorderPane.alignment="CENTER">
+         <children>
+            <AnchorPane fx:id="ConsulterMateriel" layoutX="34.0" layoutY="14.0" onMouseClicked="#ConsulterMaterielAction" prefHeight="107.0" prefWidth="164.0" style="-fx-border-color: #4682b4;">
+               <children>
+                  <ImageView fx:id="ImgConsulterMateriel" fitHeight="53.0" fitWidth="66.0" layoutX="51.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                     </image>
+                  </ImageView>
+                  <Label layoutX="17.0" layoutY="68.0" text="Consulter Materiel">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="ConsulterTickets" layoutX="259.0" layoutY="14.0" onMouseClicked="#ConsulterTicketsAction" prefHeight="107.0" prefWidth="164.0" style="-fx-border-color: #4682b4;">
+               <children>
+                  <ImageView fx:id="ImgConsulterTickets" fitHeight="53.0" fitWidth="66.0" layoutX="51.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                     </image>
+                  </ImageView>
+                  <Label layoutX="28.0" layoutY="69.0" text="Consulter tickets">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="NouveauTicket" layoutX="486.0" layoutY="14.0" onMouseClicked="#NouveauTicketAction" prefHeight="107.0" prefWidth="164.0" style="-fx-border-color: #4682b4;">
+               <children>
+                  <ImageView fx:id="ImgNouveauTicket" fitHeight="53.0" fitWidth="66.0" layoutX="51.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                     </image>
+                  </ImageView>
+                  <Label layoutX="18.0" layoutY="69.0" prefHeight="17.0" prefWidth="129.0" text="Nouveau ticket">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="NouveauMateriel" layoutX="34.0" layoutY="133.0" onMouseClicked="#NouveauMaterielAction" prefHeight="107.0" prefWidth="164.0" style="-fx-border-color: #4682b4;">
+               <children>
+                  <ImageView fx:id="ImgNouveauMateriel" fitHeight="53.0" fitWidth="66.0" layoutX="51.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                     </image>
+                  </ImageView>
+                  <Label layoutX="6.0" layoutY="57.0" text="Demande nouveau matériel">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="ConsulterDemande" layoutX="486.0" layoutY="133.0" onMouseClicked="#ConsulterDemandeAction" prefHeight="107.0" prefWidth="164.0" style="-fx-border-color: #4682b4;">
+               <children>
+                  <ImageView fx:id="ImgConsulterDemande" fitHeight="53.0" fitWidth="66.0" layoutX="51.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                     </image>
+                  </ImageView>
+                  <Label layoutX="14.0" layoutY="76.0" text="Consulter les Demandes">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="ChangerMotDePasse" layoutX="259.0" layoutY="133.0" onMouseClicked="#ChangerMotDePasseAtion" prefHeight="107.0" prefWidth="164.0" style="-fx-border-color: #4682b4;">
+               <children>
+                  <ImageView fx:id="ImgChangerMotDePasse" fitHeight="143.0" fitWidth="43.0" layoutX="51.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                     </image>
+                  </ImageView>
+                  <Label layoutX="25.0" layoutY="66.0" text="Editer Mot de Passe">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="Deconnexion" layoutX="258.0" layoutY="240.0" onMouseClicked="#DeconnexionAction" prefHeight="94.0" prefWidth="166.0" style="-fx-border-color: #4682b4;">
+               <children>
+                  <ImageView fx:id="imgDeconnexion" fitHeight="53.0" fitWidth="66.0" layoutX="51.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                     </image>
+                  </ImageView>
+                  <Label layoutX="45.0" layoutY="68.0" text="Deconnexion">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+   </center>
+   <right>
+   </right>
+   <top>
+      <AnchorPane fx:id="imageMedicaSud" prefHeight="83.0" prefWidth="718.0" BorderPane.alignment="CENTER" />
+   </top>
+</BorderPane>

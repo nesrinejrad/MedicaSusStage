@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.MedicaSud.app.client.gui.LoginController">
+   <center>
+      <AnchorPane prefHeight="360.0" prefWidth="171.0" BorderPane.alignment="CENTER" style="-fx-background-color: #ffffff;">
+         <children>
+            <JFXButton fx:id="Login" layoutX="158.0" layoutY="243.0" onAction="#GoAcceuil" prefHeight="27.0" prefWidth="76.0" style="-fx-border-color: #4682b4;" text="Entrer" />
+            <ImageView fx:id="imgLogin" fitHeight="61.0" fitWidth="103.0" layoutX="144.0" layoutY="37.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Assets/MSI-Group.jpg" />
+               </image>
+            </ImageView>
+            <JFXTextField fx:id="loginText" layoutX="117.0" layoutY="122.0" prefHeight="25.0" prefWidth="158.0" promptText="login" />
+            <JFXPasswordField fx:id="pwdText" layoutX="117.0" layoutY="174.0" prefHeight="25.0" prefWidth="158.0" promptText="mot de passe"  />
+         </children>
+      </AnchorPane>
+   </center>
+   <left>
+      <AnchorPane prefHeight="359.0" prefWidth="283.0" style="-fx-background-color: #4682b4;" BorderPane.alignment="CENTER">
+         <children>
+            <Label layoutX="63.0" layoutY="240.0" text="Welcome" textFill="WHITE" underline="true">
+               <font>
+                  <Font name="System Bold" size="36.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </left>
+   <right>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" style="-fx-background-color: #ffffff;" />
+   </right>
+   <bottom>
+   </bottom>
+</BorderPane>

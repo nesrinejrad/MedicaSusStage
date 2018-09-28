@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+    <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="580.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.MedicaSud.app.client.gui.ConsulterTicketsParUtilisateurController">
+         <top>
+             <AnchorPane prefHeight="24.0" prefWidth="400.0" style="-fx-background-color: #4682b4;" BorderPane.alignment="CENTER" />
+         </top>
+         <bottom>
+            <AnchorPane prefHeight="24.0" prefWidth="400.0" style="-fx-background-color: #4682b4;" BorderPane.alignment="CENTER" />
+         </bottom>
+         <center>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #ffffff;" BorderPane.alignment="CENTER">
+         <children>
+            <Label layoutX="35.0" layoutY="39.0" prefHeight="17.0" prefWidth="109.0" text="Liste de matériels" underline="true">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <TableView fx:id="tickets" layoutX="14.0" layoutY="88.0" prefHeight="191.0" prefWidth="515.0">
+               <columns>
+                  <TableColumn fx:id="materielTicket" prefWidth="95.0" text="matériel" />
+                  <TableColumn fx:id="DateCreationTicket" prefWidth="80.0" text="date création" />
+                  <TableColumn fx:id="ProblèpmeTicket" prefWidth="95.0" text="problème" />
+                  <TableColumn fx:id="StatutTicket" prefWidth="75.0" text="statut" />
+                  <TableColumn fx:id="DescriptionTicket" prefWidth="85.0" text="description" />
+                  <TableColumn fx:id="etatTicket" prefWidth="75.0" text="etat" />
+               </columns>
+            </TableView>
+             </children></AnchorPane>
+         </center>
+                    <left>
+         <AnchorPane prefHeight="24.0" prefWidth="24.0" style="-fx-background-color: #4682b4;" BorderPane.alignment="CENTER" />
+         </left>
+         <right>
+                      <AnchorPane prefHeight="24.0" prefWidth="24.0" style="-fx-background-color: #4682b4;" BorderPane.alignment="CENTER" />
+
+         </right>
+      </BorderPane>
+
+    
