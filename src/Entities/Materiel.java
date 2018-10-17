@@ -6,6 +6,7 @@
 package Entities;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -22,10 +23,11 @@ public class Materiel {
 	private TypeMateriel typeMateriel;
 	private java.util.List<Ticket> tickets;
 	private java.util.List<Utilisateur> utilisateurs= new ArrayList<Utilisateur>();
-	private Fournisseur fournisseur;
+	private String fournisseur_id;
 	private java.util.List<Intervention> interventions;
-	private static final long serialVersionUID = 1L;
-	public String getId() {
+
+        
+        public String getId() {
 		return id;
 	}
 	public void setId(String id) {
@@ -56,11 +58,11 @@ public class Materiel {
 		this.dureeGarantie = dureeGarantie;
 	}
 	
-	public Fournisseur getFournisseur() {
-		return fournisseur;
+	public String getFournisseur() {
+		return fournisseur_id;
 	}
-	public void setFournisseur(Fournisseur fournisseur) {
-		this.fournisseur = fournisseur;
+	public void setFournisseur(String fournisseur) {
+		this.fournisseur_id = fournisseur;
 	}
 	
 	

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tn.MedicaSud.app.client.gui;
+package GUI;
 
 import com.jfoenix.controls.JFXButton;
 import java.net.URL;
@@ -16,8 +16,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.DatePicker;
-import tn.MedicaSud.entities.Intervention;
-import tn.MedicaSud.services.InterventionServicesRemote;
+import Entities.Intervention;
+import Services.InterventionServices;
+import java.sql.Date;
 
 /**
  * FXML Controller class
@@ -32,6 +33,7 @@ public class ChangerDateIntervention implements Initializable {
     private DatePicker dayeIntervrntion;
     static Intervention intervention= new Intervention();
     Utilites utilities= new Utilites();
+    InterventionServices is= new InterventionServices();
     /**
      * Initializes the controller class.
      */
@@ -42,13 +44,12 @@ public class ChangerDateIntervention implements Initializable {
 
     @FXML
     private void ValiderAction(ActionEvent event) throws NamingException {
-    	 System.out.println(intervention.toString());
-    	intervention.setDateIntervention(dayeIntervrntion.getValue());
-    	utilities.context= new InitialContext();
-    	utilities.interventionServicesRemote= (InterventionServicesRemote) Utilites.context.lookup(Utilites.interventionRemote);
-    	utilities.interventionServicesRemote.update(intervention);
+         System.out.println(intervention.toString());
+    	intervention.setDateIntervention(Date.valueOf(dayeIntervrntion.getValue()));
+    	is.modifierIntervention(intervention);
     	utilities.closeStage(Valider);
     	utilities.GenerertAletrtOk("intervention mise à jour");
+        
     }
     
 }

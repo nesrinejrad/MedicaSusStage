@@ -17,8 +17,9 @@ public class Panne {
 	private String solution;
 	private TypeMateriel typeMateriel;
 	private List<Ticket> tickets;
-	private static final long serialVersionUID = 1L;
-	public int getId() {
+
+        
+        public int getId() {
 		return id;
 	}
 	public void setId(int id) {

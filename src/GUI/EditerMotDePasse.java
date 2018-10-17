@@ -3,14 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tn.MedicaSud.app.client.gui;
+package GUI;
 
 import GUI.Accueil_clientController;
-import tn.MedicaSud.app.client.gui.Utilites;
-import tn.MedicaSud.entities.Panne;
-import tn.MedicaSud.entities.TypeMateriel;
-import tn.MedicaSud.services.PanneServicesRemote;
-import tn.MedicaSud.services.UtilisateurServicesRemote;
+import GUI.Utilites;
+import Entities.Panne;
+import Entities.TypeMateriel;
+import Services.UtilisateurServices;
 
 import java.awt.TextField;
 import java.io.IOException;
@@ -51,10 +50,11 @@ public class EditerMotDePasse implements Initializable {
     @FXML
     private JFXPasswordField mdp2;
     private ObservableList<String> dateTypeMateriel=FXCollections.observableArrayList();
-    private PanneServicesRemote panneServiceRemote;
+   
     static int dim1;
     static int dim2;
-
+    
+    UtilisateurServices us = new UtilisateurServices();
 
     /**
      * Initializes the controller class.
@@ -67,7 +67,7 @@ public class EditerMotDePasse implements Initializable {
 
     @FXML
     private void ValiderChangerMotDePasse(ActionEvent event) throws NamingException, IOException {
-    	System.out.println("mdp1="+mdp1.getText());
+   	System.out.println("mdp1="+mdp1.getText());
     	System.out.println("mdp2="+mdp2.getText());
     	String msg="";
     	if (mdp1.getText()==null) {
@@ -83,15 +83,12 @@ public class EditerMotDePasse implements Initializable {
     	{
     	    Accueil_clientController.utilisateurConnecte.setPassword(mdp1.getText());
     	      utilites.closeStage(ValiderNouvellePanne);
-    	      utilites.context=new InitialContext();
-    	      utilites.utilisateurServicesRemote=(UtilisateurServicesRemote) utilites.context.lookup(utilites.utilRemote);
-    	      utilites.utilisateurServicesRemote.update(Accueil_clientController.utilisateurConnecte);
-    	}
+              us.modifierUtilisateur(Accueil_clientController.utilisateurConnecte);    	}
     	else
     	{	
     		msg=" mot de passes non identiques!!";
     	    utilites.GenererAlerte(msg);}
-       
+     
     }
        
 	     

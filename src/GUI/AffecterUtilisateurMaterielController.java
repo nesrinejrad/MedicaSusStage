@@ -3,8 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tn.MedicaSud.app.client.gui;
+package GUI;
 
+import Entities.Materiel;
+import Entities.Utilisateur;
+import Services.MaterielService;
+import Services.UtilisateurServices;
 import com.jfoenix.controls.JFXButton;
 import javafx.stage.Stage;
 
@@ -15,6 +19,7 @@ import com.jfoenix.controls.JFXTextField;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,13 +39,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.fxml.Initializable;
-import javafx.scene.layout.AnchorPane;
-import tn.MedicaSud.entities.Materiel;
-import tn.MedicaSud.entities.Role;
-import tn.MedicaSud.entities.StatutTicket;
-import tn.MedicaSud.entities.Utilisateur;
-import tn.MedicaSud.services.MaterielServicesRemote;
-import tn.MedicaSud.services.UtilisateurServicesRemote;
+
 
 /**
  * FXML Controller class
@@ -75,6 +74,8 @@ public class AffecterUtilisateurMaterielController implements Initializable {
    static Utilisateur utilisateur= new Utilisateur();
     Utilites utilities= new Utilites();
     private ObservableList<Utilisateur> utilisateursData;
+    UtilisateurServices us  = new UtilisateurServices();
+    MaterielService ms= new MaterielService();
 
     /**
      * Initializes the controller class.
@@ -87,20 +88,18 @@ public class AffecterUtilisateurMaterielController implements Initializable {
     }
 
     
-    public void RemplirTable(Materiel materiel) throws NamingException
-    {	
+    public void RemplirTable(Materiel materiel) throws NamingException, SQLException
+    {       
     	List<Utilisateur> utilisateurs= new ArrayList<Utilisateur>();
     	List<Utilisateur> utilisateurs1= new ArrayList<Utilisateur>();	
-    	utilities.context= new InitialContext();
     	this.materiel=materiel;
-		utilities.utilisateurServicesRemote=(UtilisateurServicesRemote) utilities.context.lookup(utilities.utilRemote );
-    	utilisateurs=utilities.utilisateurServicesRemote.findAll();
+    	utilisateurs=us.displayAll();
   	    for (Utilisateur utilisateur : utilisateurs) {
   	    	System.out.println(utilisateur.getEmail());
   	    	System.out.println("size utili="+utilisateurs.size());
   		 boolean exist=false;
   		List<Materiel> materiels= new ArrayList<Materiel>();
-  		  materiels=utilisateur.getMateriels();
+  		  materiels=ms.displayAllMaterielParUtilisateur(utilisateur.getCode());
   		System.out.println("size mat="+materiels.size());
   		  for (Materiel materiel2 : materiels) {
   			 System.out.println("materiel éli jé="+materiel.getId()); 
@@ -129,18 +128,15 @@ public class AffecterUtilisateurMaterielController implements Initializable {
   
  
     @FXML
-    private void AffecterUtilisateurMateriel() throws NamingException, IOException
+    private void AffecterUtilisateurMateriel() throws NamingException, IOException, SQLException
     {		 System.out.println("le materiel ici est null="+materiel.getId());
     	Utilisateur utilisateur= new Utilisateur();
     	utilisateur=UtilisateurTableView.getSelectionModel().getSelectedItem();
     	List<Materiel> materiels= new ArrayList<Materiel>();
     	materiels=utilisateur.getMateriels();
     	materiels.add(materiel);
-    	utilisateur.setMateriels(materiels);
-    	utilities.context= new InitialContext();
-    	utilities.utilisateurServicesRemote=(UtilisateurServicesRemote) utilities.context.lookup(utilities.utilRemote);
-    	utilities.utilisateurServicesRemote.update(utilisateur);
-    	
+        ms.ajouterMateriel(materiel);
+    	ms.AffecterMaterielUtilisateur(utilisateur, materiel);
     	AffecterUtilisateurMaterielController affecterUtilisateurMaterielController= new AffecterUtilisateurMaterielController();
     	FXMLLoader loader=new FXMLLoader(getClass().getResource("AffecterUtilisateurMateriel.fxml"));
         Parent root = (Parent) loader.load();

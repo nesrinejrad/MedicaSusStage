@@ -3,17 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tn.MedicaSud.app.client.gui;
+package GUI;
 
 import GUI.Accueil_clientController;
-import tn.MedicaSud.app.client.gui.Utilites;
+import GUI.Utilites;
 
 
 
 
-import tn.MedicaSud.entities.Materiel;
-import tn.MedicaSud.services.MaterielServicesRemote;
-import tn.MedicaSud.services.UtilisateurServicesRemote;
+import Entities.Materiel;
+import Services.MaterielService;
 import javafx.collections.ObservableList;
 
 import java.io.IOException;
@@ -26,10 +25,11 @@ import java.util.ResourceBundle;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-
-import org.hibernate.PropertyValueException;
-
 import com.jfoenix.controls.JFXButton;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -62,7 +62,7 @@ public class Consulter_matérielController implements Initializable {
     @FXML
     private TableColumn<Materiel, String> marqueMAteriel;
     @FXML
-    private TableColumn<Materiel, LocalDate> DateAchatMAteriel;
+    private TableColumn<Materiel, Date> DateAchatMAteriel;
     @FXML
     private JFXButton ConsulterMateriel;
     @FXML
@@ -99,34 +99,39 @@ public class Consulter_matérielController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        utilites.backgroundImage(imageMedicaSud);
-        Image img = new Image("Assets/icons8-voir-les-détails-50.png");
-   	   imgConsulterTicket.setImage(img);
-   	   
-   	    img = new Image("Assets/icons8-poste-de-travail-64.png");
- 	   imgConsulterMateriel.setImage(img);
- 	   
- 	   img = new Image("Assets/icons8-ajouter-32.png");
- 	   ImgNouveauTicket.setImage(img);
- 	   
- 	   img = new Image("Assets/Demande.png");
- 	   ImgDemandeMateriel.setImage(img);
- 	   
- 	   img = new Image("Assets/icons8-editer-le-fichier-80.png");
- 	   ImgEditerProfile.setImage(img);
- 	   
- 	   img = new Image("Assets/icons8-connexion-filled-50.png");
- 	   ImageDeconnexion.setImage(img);
- 	   
- 	   imgAccceuil.setImage(img);;
-        // TODO
- 	   List<Materiel> materiels= new ArrayList<Materiel>();
- 	   materiels.addAll(Accueil_clientController.utilisateurConnecte.getMateriels());
- 	   data=FXCollections.observableList(materiels);		
- 	  referenceMateriel.setCellValueFactory(new PropertyValueFactory<>("reference"));
- 	  marqueMAteriel.setCellValueFactory(new PropertyValueFactory<>("marque"));
- 	  DateAchatMAteriel.setCellValueFactory(new PropertyValueFactory<>("date achat"));
- 	  this.materiels.setItems(data);
+        try {
+            utilites.backgroundImage(imageMedicaSud);
+            Image img = new Image("Assets/icons8-voir-les-détails-50.png");
+            imgConsulterTicket.setImage(img);
+            
+            img = new Image("Assets/icons8-poste-de-travail-64.png");
+            imgConsulterMateriel.setImage(img);
+            
+            img = new Image("Assets/icons8-ajouter-32.png");
+            ImgNouveauTicket.setImage(img);
+            
+            img = new Image("Assets/demande.png");
+            ImgDemandeMateriel.setImage(img);
+            
+            img = new Image("Assets/icons8-editer-le-fichier-80.png");
+            ImgEditerProfile.setImage(img);
+            
+            img = new Image("Assets/icons8-connexion-filled-50.png");
+            ImageDeconnexion.setImage(img);
+            
+            imgAccceuil.setImage(img);;
+            // TODO
+            List<Materiel> materiels= new ArrayList<Materiel>();
+            MaterielService ms = new MaterielService();
+            materiels=ms.displayAllMaterielParUtilisateur(Accueil_clientController.utilisateurConnecte.getCode());
+            data=FXCollections.observableList(materiels);
+            referenceMateriel.setCellValueFactory(new PropertyValueFactory<>("reference"));
+            marqueMAteriel.setCellValueFactory(new PropertyValueFactory<>("marque"));
+            DateAchatMAteriel.setCellValueFactory(new PropertyValueFactory<>("date achat"));
+            this.materiels.setItems(data);
+        } catch (SQLException ex) {
+            Logger.getLogger(Consulter_matérielController.class.getName()).log(Level.SEVERE, null, ex);
+        }
  	   
     }    
     @FXML

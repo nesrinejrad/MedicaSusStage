@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tn.MedicaSud.app.client.gui;
+package GUI;
 
 import com.jfoenix.controls.JFXButton;
 
@@ -18,8 +18,6 @@ import java.util.ResourceBundle;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-
-import org.hibernate.internal.util.xml.FilteringXMLEventReader;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -36,10 +34,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import tn.MedicaSud.entities.Materiel;
-import tn.MedicaSud.entities.Utilisateur;
-import tn.MedicaSud.services.MaterielServicesRemote;
-import tn.MedicaSud.services.UtilisateurServicesRemote;
+import Entities.Materiel;
+import Entities.Utilisateur;
+import Services.MaterielService;
+import Services.UtilisateurServices;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * FXML Controller class
@@ -60,7 +62,7 @@ public class GestionMaterielsController implements Initializable {
     @FXML
     private TableColumn<Materiel, String> DureeGarantie;
     @FXML
-    private TableColumn<Materiel, LocalDate> Fournisseur;
+    private TableColumn<Materiel, Date> Fournisseur;
     @FXML
     private JFXButton Accueil;
     @FXML
@@ -94,7 +96,8 @@ public class GestionMaterielsController implements Initializable {
     private TableColumn<Utilisateur, String> emailUtilisateur;
     @FXML
     private TableColumn<Utilisateur, String> fonctionUtilisateur;
-
+    MaterielService ms= new MaterielService();
+    UtilisateurServices us= new UtilisateurServices();
 
     /**
      * Initializes the controller class.
@@ -105,9 +108,7 @@ public class GestionMaterielsController implements Initializable {
 
     	List<Materiel> materiels= new ArrayList<Materiel>();
    	   try {
-   		   utilies.context= new InitialContext();
-		utilies.materielServicesRemote= (MaterielServicesRemote) utilies.context.lookup(utilies.materielRemote);
-		materiels=utilies.materielServicesRemote.findAll();
+		materiels=ms.displayAll();
 		System.out.println("size materiem="+materiels.size());
 		data=FXCollections.observableList(materiels);	
 		System.out.println("data materiem="+data.size());
@@ -121,9 +122,9 @@ public class GestionMaterielsController implements Initializable {
 	 	  CodeMateriel.setCellValueFactory(new PropertyValueFactory<>("id"));
 	   		this.materiels.setItems(data);
 
-   	   } catch (NamingException e) {
-		//this.materiels.setVisible(true);
-	}	
+   	   } catch (SQLException ex) { 
+                Logger.getLogger(GestionMaterielsController.class.getName()).log(Level.SEVERE, null, ex);
+            } 
     }    
 
     @FXML
@@ -150,27 +151,27 @@ public class GestionMaterielsController implements Initializable {
 
     @FXML
     private void supprimerAction(ActionEvent event) throws NamingException {
-    	Materiel materiel= new Materiel();
-    	materiel=materiels.getSelectionModel().getSelectedItem();
-    	utilies.context= new InitialContext();
-    	utilies.materielServicesRemote=(MaterielServicesRemote) utilies.context.lookup(utilies.materielRemote);
-    	utilies.materielServicesRemote.delete(materiel);
-    	utilies.GenerertAletrtOk("materiel supprimé avec succes");
-    	this.initialize(null, null);    	
+            try {
+                Materiel materiel= new Materiel();
+                materiel=materiels.getSelectionModel().getSelectedItem();
+                ms.supprimerMAteriel(materiel);
+                utilies.GenerertAletrtOk("materiel supprimé avec succes");    
+                this.initialize(null, null);
+            } catch (SQLException ex) {
+                Logger.getLogger(GestionMaterielsController.class.getName()).log(Level.SEVERE, null, ex);
+            }
     }
 
     @FXML
-    private void ListeUtilisateurAction(ActionEvent event) throws IOException, NamingException {
+    private void ListeUtilisateurAction(ActionEvent event) throws IOException, NamingException, SQLException {
     	
     	Materiel materiel= new Materiel();
     	materiel=this.materiels.getSelectionModel().getSelectedItem();
-    
+        UtilisateurServices us= new UtilisateurServices();
     	List<Utilisateur> utilisateurs= new ArrayList<Utilisateur>();
-    	List<Utilisateur> utilisateurs1= new ArrayList<Utilisateur>();
-    	utilies.context= new InitialContext();
-    	utilies.utilisateurServicesRemote= (UtilisateurServicesRemote) utilies.context.lookup(utilies.utilRemote);
-    	utilisateurs1=utilies.utilisateurServicesRemote.findAll();
-    	for (Utilisateur utilisateur : utilisateurs1) {
+    	//List<Utilisateur> utilisateurs1= new ArrayList<Utilisateur>();
+        utilisateurs=us.UtilisateurMateriel(materiel.getId());
+    	/*for (Utilisateur utilisateur : utilisateurs1) {
 			boolean exist=false;
 			List<Materiel> materiels= new ArrayList<Materiel>();
 			materiels=utilisateur.getMateriels();
@@ -186,7 +187,7 @@ public class GestionMaterielsController implements Initializable {
 					utilisateurs.add(utilisateur);
 				}
 			
-		}
+		}*/
     	if(utilisateurs.size()!=0)
     	{UtilisateurTableView.setVisible(true);
     	this.materiels.setVisible(false);
@@ -206,7 +207,19 @@ public class GestionMaterielsController implements Initializable {
     }
 
     @FXML
-    private void ListeInterventionAction(ActionEvent event) {
+    private void ListeInterventionAction(ActionEvent event) throws IOException, SQLException, NamingException {
+          Materiel materiel= new Materiel();
+    	materiel=materiels.getSelectionModel().getSelectedItem();
+    	ConsulterInterventionParMaterielController consulterMaterielParUtilisateurController= new ConsulterInterventionParMaterielController();
+    	//consulterMaterielParUtilisateurController.m=materiel;
+    	FXMLLoader loader=new FXMLLoader(getClass().getResource("ConsulterInterventionParMateriel.fxml"));
+        Parent root = (Parent) loader.load();
+    	consulterMaterielParUtilisateurController=loader.getController();
+    	consulterMaterielParUtilisateurController.RemplirTableTout(materiel);		
+        Scene newScene = new Scene(root);
+        Stage newStage = new Stage();
+        newStage.setScene(newScene);
+        newStage.show();
     }
 
     @FXML

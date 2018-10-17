@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tn.MedicaSud.app.client.gui;
+package GUI;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.time.YearMonth;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -49,10 +50,6 @@ public class AccueilAdminController implements Initializable {
     @FXML
     private ImageView ImgGestionPanne;
     
-    @FXML
-    private AnchorPane CoonsulterStatistique;
-    @FXML
-    private ImageView ImgCoonsulterStatistique;
     @FXML
     private AnchorPane EditerProfil;
     @FXML
@@ -123,7 +120,7 @@ public class AccueilAdminController implements Initializable {
     }
 
     @FXML
-    private void GestionInterventionAction(MouseEvent event) throws IOException {
+    private void GestionInterventionAction(MouseEvent event) throws IOException, SQLException {
     	  FXMLLoader loader = new FXMLLoader(getClass().getResource("fullCalendar.fxml"));
     	  Stage primaryStage= new Stage();
           primaryStage.setTitle("gestion des interventions");

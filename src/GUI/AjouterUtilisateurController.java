@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tn.MedicaSud.app.client.gui;
+package GUI;
 
 import com.jfoenix.controls.JFXButton;
 
@@ -12,7 +12,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 
-import Utilities.SendMail;
+import Utiles.SendMail;
 
 import java.io.IOException;
 import java.net.URL;
@@ -28,10 +28,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
-import tn.MedicaSud.entities.Role;
-import tn.MedicaSud.entities.StatutTicket;
-import tn.MedicaSud.entities.Utilisateur;
-import tn.MedicaSud.services.UtilisateurServicesRemote;
+import Entities.Role;
+import Entities.StatutTicket;
+import Entities.Utilisateur;
+import static GUI.AffecterUtilisateurMaterielController.utilisateur;
+import Services.UtilisateurServices;
+import java.sql.SQLException;
 
 /**
  * FXML Controller class
@@ -58,6 +60,7 @@ public class AjouterUtilisateurController implements Initializable {
     
     Utilites utilities= new Utilites();
     ObservableList<String> roleData=FXCollections.observableArrayList();
+    UtilisateurServices us = new UtilisateurServices();
 
     /**
      * Initializes the controller class.
@@ -74,7 +77,7 @@ public class AjouterUtilisateurController implements Initializable {
 
 
     @FXML
-    private void EnregistrerUtilisateur(ActionEvent event) throws NamingException, IOException {
+    private void EnregistrerUtilisateur(ActionEvent event) throws NamingException, IOException, SQLException {
     	Utilisateur utilisateur= new Utilisateur();
     	utilisateur.setCode(IdentifientText.getText());
     	utilisateur.setEmail(AdressemailText.getText());
@@ -82,13 +85,25 @@ public class AjouterUtilisateurController implements Initializable {
     	utilisateur.setPrenom(PrenomText.getText());
     	utilisateur.setPassword(MotDePasseText.getText());
     	utilisateur.setRole(Role.valueOf((String) RoleUtilisateur.getValue()));
-    	utilities.context= new InitialContext();
-    	utilities.utilisateurServicesRemote=(UtilisateurServicesRemote) utilities.context.lookup(utilities.utilRemote);
-    	utilities.utilisateurServicesRemote.update(utilisateur);
+        Utilisateur u1= new Utilisateur();
+        u1=null;
+        u1=us.rechercherUtilisateur(utilisateur.getCode());
+        if(u1==null)
+        {us.ajouterUtilisateur(utilisateur);
     	utilities.closeStage(Enregistrer);
     	utilities.GenerertAletrtOk("utilisateur Ajouter avec succes");
     	SendMail sm =new SendMail();
-		  sm.sendmail("medicasudapplication@gmail.com",utilisateur.getEmail(), "medicasud123", "your login to helpDesk platfrom \n Login:"+utilisateur.getEmail()+" \n Password :"+utilisateur.getPassword());
+		  sm.sendmail("medicasudapplication@gmail.com",utilisateur.getEmail(), "medicasud123", "your login to helpDesk platfrom \n Login:"+utilisateur.getEmail()+" \n Password :"+utilisateur.getPassword());}
+        else
+        {
+            us.modifierUtilisateur(utilisateur);
+            utilities.closeStage(Enregistrer);
+                	SendMail sm =new SendMail();
+                        
+		  sm.sendmail("medicasudapplication@gmail.com",utilisateur.getEmail(), "medicasud123", "your login to helpDesk platfrom \n Login:"+utilisateur.getEmail()+" \n Password :"+utilisateur.getPassword());}
+
+            
+        
     }
     
     public void RemplirCahmp(Utilisateur utilisateur)

@@ -17,8 +17,8 @@ public class Fournisseur {
 	private String telephone;
 	private String email;
 	private java.util.List<Materiel> materiels;
-	private static final long serialVersionUID = 1L;
-	public String getId() {
+
+        public String getId() {
 		return id;
 	}
 	public void setId(String id) {

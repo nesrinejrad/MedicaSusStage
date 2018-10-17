@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tn.MedicaSud.app.client.gui;
+package GUI;
 
 import com.jfoenix.controls.JFXButton;
 
@@ -29,10 +29,12 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import tn.MedicaSud.entities.Fournisseur;
-import tn.MedicaSud.entities.Materiel;
-import tn.MedicaSud.services.FournisseurServicesRemote;
-import tn.MedicaSud.services.MaterielServicesRemote;
+import Entities.Fournisseur;
+import Entities.Materiel;
+import Services.FournisseurService;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * FXML Controller class
@@ -68,6 +70,7 @@ public class GestionFournisseursController implements Initializable {
     private TableColumn<Fournisseur, String> telephoneFournisseur;
     Utilites utilities= new Utilites();
     private ObservableList<Fournisseur> data;
+    FournisseurService fs= new FournisseurService();
 
     /**
      * Initializes the controller class.
@@ -78,10 +81,8 @@ public class GestionFournisseursController implements Initializable {
     	
     	
     	  try {
-			utilities.context= new InitialContext();
-			utilities.fournisseurServicesRemote= (FournisseurServicesRemote) utilities.context.lookup(utilities.FournisseurRemote);
 	  		List<Fournisseur> fournisseurs= new ArrayList<Fournisseur>();
-	  		fournisseurs=utilities.fournisseurServicesRemote.findAll();
+	  		fournisseurs=fs.displayAll();
 	  		data=FXCollections.observableList(fournisseurs);
 	  		codeFournisseur.setCellValueFactory(new PropertyValueFactory<>("id"));
 	  	   	  nomFournisseur.setCellValueFactory(new PropertyValueFactory<>("nom"));
@@ -89,9 +90,9 @@ public class GestionFournisseursController implements Initializable {
 	  	   	  emailFournisseur.setCellValueFactory(new PropertyValueFactory<>("email"));
 	  	 	  telephoneFournisseur.setCellValueFactory(new PropertyValueFactory<>("telephone"));
 	  	 	  FournisseurTableView.setItems(data);
-		} catch (NamingException e) {
-			
-		}
+		} catch (SQLException ex) {
+                Logger.getLogger(GestionFournisseursController.class.getName()).log(Level.SEVERE, null, ex);
+            }
   	
     }    
 
@@ -116,18 +117,16 @@ public class GestionFournisseursController implements Initializable {
     }
 
     @FXML
-    private void supprimerAction(ActionEvent event) throws NamingException {
+    private void supprimerAction(ActionEvent event) throws NamingException, SQLException {
     	Fournisseur fournisseur=FournisseurTableView.getSelectionModel().getSelectedItem();
-    	utilities.context= new InitialContext();
-    	utilities.fournisseurServicesRemote= (FournisseurServicesRemote) utilities.context.lookup(utilities.FournisseurRemote);
-    	utilities.fournisseurServicesRemote.delete(fournisseur);
+    	fs.supprimerFournisseur(fournisseur);
       utilities.GenerertAletrtOk("fournisseur supprimé");
     	this.initialize(null, null);
 
     }
 
     @FXML
-    private void ListeMAterielAction(ActionEvent event) throws IOException {
+    private void ListeMAterielAction(ActionEvent event) throws IOException, SQLException {
     	Fournisseur fournisseur= FournisseurTableView.getSelectionModel().getSelectedItem();
     	ConsulterMaterielFournisseurController consulterMaterielFournisseurController= new ConsulterMaterielFournisseurController();
     	FXMLLoader loader=new FXMLLoader(getClass().getResource("ConsulterMaterielFournisseur.fxml"));

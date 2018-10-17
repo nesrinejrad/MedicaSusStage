@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class Utilisateur extends User{
     private String nom;
 	private String prenom;
+       
 	private Role role;
 	private String fonction;
 	private java.util.List<Demande> demandes;

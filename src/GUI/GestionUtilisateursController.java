@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tn.MedicaSud.app.client.gui;
+package GUI;
 
 import com.jfoenix.controls.JFXButton;
 
@@ -16,9 +16,6 @@ import java.util.ResourceBundle;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-
-import org.hibernate.internal.util.xml.FilteringXMLEventReader;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -34,9 +31,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import tn.MedicaSud.entities.Materiel;
-import tn.MedicaSud.entities.Utilisateur;
-import tn.MedicaSud.services.UtilisateurServicesRemote;
+import Entities.Materiel;
+import Entities.Utilisateur;
+import Services.UtilisateurServices;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * FXML Controller class
@@ -77,35 +77,34 @@ public class GestionUtilisateursController implements Initializable {
     private JFXButton Deconnexion;
     Utilites utilies= new Utilites();
     private ObservableList<Utilisateur> utilisateursData;
-
+    UtilisateurServices us= new UtilisateurServices();
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-    	utilies.backgroundImage(imageMedicaSud);
-    	List<Utilisateur> utilisateurs= new ArrayList<Utilisateur>();
-    	try {
-			utilies.context= new InitialContext();
-			utilies.utilisateurServicesRemote=(UtilisateurServicesRemote) utilies.context.lookup(utilies.utilRemote );
-	    	utilisateurs=utilies.utilisateurServicesRemote.findAll();
-	    	System.out.println(utilisateurs.size());
-	    	utilisateursData=FXCollections.observableList(utilisateurs);
-	   	    codeUtilisateur.setCellValueFactory(new PropertyValueFactory<>("code"));
-	   	    nomUtilisateur.setCellValueFactory(new PropertyValueFactory<>("nom"));
-	   	    prenomUtilisateur.setCellValueFactory(new PropertyValueFactory<>("prenom"));
-	   	    motdepasseUtilisateur.setCellValueFactory(new PropertyValueFactory<>("password"));
-	   	    emailUtilisateur.setCellValueFactory(new PropertyValueFactory<>("email"));
-	   	    fonctionUtilisateur.setCellValueFactory(new PropertyValueFactory<>("fonction"));
-	   	    UtilisateurTableView.setItems(utilisateursData);
+            try {
+                utilies.backgroundImage(imageMedicaSud);
+                List<Utilisateur> utilisateurs= new ArrayList<Utilisateur>();
+                
+                utilisateurs=us.displayAll();
+                System.out.println(utilisateurs.size());
+                utilisateursData=FXCollections.observableList(utilisateurs);
+                codeUtilisateur.setCellValueFactory(new PropertyValueFactory<>("code"));
+                nomUtilisateur.setCellValueFactory(new PropertyValueFactory<>("nom"));
+                prenomUtilisateur.setCellValueFactory(new PropertyValueFactory<>("prenom"));
+                motdepasseUtilisateur.setCellValueFactory(new PropertyValueFactory<>("password"));
+                emailUtilisateur.setCellValueFactory(new PropertyValueFactory<>("email"));
+                fonctionUtilisateur.setCellValueFactory(new PropertyValueFactory<>("fonction"));
+                UtilisateurTableView.setItems(utilisateursData);
+            } catch (SQLException ex) {
+                Logger.getLogger(GestionUtilisateursController.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
 
 
 
-    	} catch (NamingException e) {
-			
-		}
     	
     }    
 
@@ -133,18 +132,19 @@ public class GestionUtilisateursController implements Initializable {
 
     @FXML
     private void supprimerAction(ActionEvent event) throws NamingException {
-    	Utilisateur utilisateur= new Utilisateur();
-    	utilisateur=UtilisateurTableView.getSelectionModel().getSelectedItem();
-    	utilies.context= new InitialContext();
-    	utilies.utilisateurServicesRemote=(UtilisateurServicesRemote) utilies.context.lookup(utilies.utilRemote);
-    	utilies.utilisateurServicesRemote.delete(utilisateur);
-    	//utilies.closeStage(Accueil);
-    	utilies.GenerertAletrtOk("utilisateur Ajouter avec succes");
-    	this.initialize(null, null);
+            try {
+                Utilisateur utilisateur= new Utilisateur();
+                utilisateur=UtilisateurTableView.getSelectionModel().getSelectedItem();
+                us.supprimerUtilisateur(utilisateur);    	//utilies.closeStage(Accueil);
+                utilies.GenerertAletrtOk("utilisateur Ajouter avec succes");
+                this.initialize(null, null);
+            } catch (SQLException ex) {
+                Logger.getLogger(GestionUtilisateursController.class.getName()).log(Level.SEVERE, null, ex);
+            }
     }
 
     @FXML
-    private void ListeMAterielAction(ActionEvent event) throws IOException {
+    private void ListeMAterielAction(ActionEvent event) throws IOException, SQLException {
     	Utilisateur utilisateur= new Utilisateur();
     	utilisateur=UtilisateurTableView.getSelectionModel().getSelectedItem();
     	ConsulterMaterielParUtilisateurController consulterMaterielParUtilisateurController= new ConsulterMaterielParUtilisateurController();
@@ -160,7 +160,7 @@ public class GestionUtilisateursController implements Initializable {
     }
 
     @FXML
-    private void ListeInterventionAction(ActionEvent event) throws IOException, NamingException {
+    private void ListeInterventionAction(ActionEvent event) throws IOException, NamingException, SQLException {
     	Utilisateur utilisateur= new Utilisateur();
     	utilisateur=UtilisateurTableView.getSelectionModel().getSelectedItem();
     	ConsulterTicketsParUtilisateurController consulterTicketsParUtilisateurController= new ConsulterTicketsParUtilisateurController();

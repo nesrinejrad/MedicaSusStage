@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tn.MedicaSud.app.client.gui;
+package GUI;
 
 import com.jfoenix.controls.JFXButton;
 import javafx.stage.Stage;
@@ -37,16 +37,14 @@ import javafx.scene.image.ImageView;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
-import tn.MedicaSud.entities.EtatTicket;
-import tn.MedicaSud.entities.Materiel;
-import tn.MedicaSud.entities.Role;
-import tn.MedicaSud.entities.StatutTicket;
-import tn.MedicaSud.entities.Ticket;
-import tn.MedicaSud.entities.Utilisateur;
-import tn.MedicaSud.services.MaterielServicesRemote;
-import tn.MedicaSud.services.TicketSerciesRemote;
-import tn.MedicaSud.services.UtilisateurServicesRemote;
-
+import Entities.EtatTicket;
+import Entities.Materiel;
+import Entities.Role;
+import Entities.StatutTicket;
+import Entities.Ticket;
+import Entities.Utilisateur;
+import Services.TicketServices;
+import java.sql.SQLException;
 /**
  * FXML Controller class
  *
@@ -79,6 +77,7 @@ public class ConsulterTicketsParUtilisateurController implements Initializable {
     private JFXButton Affecter;
    static Utilisateur utilisateur= new Utilisateur();
     Utilites utilities= new Utilites();
+    TicketServices ts = new TicketServices();
  
 
     /**
@@ -89,18 +88,16 @@ public class ConsulterTicketsParUtilisateurController implements Initializable {
     	   
 
     }
-    public void remplir() throws NamingException
+    public void remplir() throws NamingException, SQLException
     {
     	
-			utilities.context = new InitialContext();
-			utilities.ticketSerciesRemote=(TicketSerciesRemote) utilities.context.lookup(utilities.ticketRemote);
-			List<Ticket> tickets=utilities.ticketSerciesRemote.findAll();
+			List<Ticket> tickets=ts.displayAll();
 			List<Ticket> ticketsFinal= new ArrayList<Ticket>();
 			System.out.println("utilisateur="+utilisateur.getCode());
 			System.out.println(tickets.size());
 			for (Ticket ticket : tickets) {
-				System.out.println(ticket.getUtilisateur().getCode());
-				if(ticket.getUtilisateur().getCode().equals(utilisateur.getCode()))
+				System.out.println(ticket.getUtilisateur());
+				if(ticket.getUtilisateur().equals(utilisateur.getCode()))
 				{	
 					ticketsFinal.add(ticket);
 				}}
@@ -115,7 +112,7 @@ public class ConsulterTicketsParUtilisateurController implements Initializable {
 
 		 	 
 		 	 this.tickets.setItems(data);
-		 	
+		
     }
     }
 

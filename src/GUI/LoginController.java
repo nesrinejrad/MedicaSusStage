@@ -3,13 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tn.MedicaSud.app.client.gui;
+package GUI;
 
+import Entities.Role;
+import Entities.Utilisateur;
 import GUI.Accueil_clientController;
-import tn.MedicaSud.app.client.gui.Utilites;
-import tn.MedicaSud.entities.Role;
-import tn.MedicaSud.entities.Utilisateur;
-import tn.MedicaSud.services.UtilisateurServicesRemote;
+import Services.UtilisateurServices;
+
+
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
@@ -53,7 +54,6 @@ public class LoginController implements Initializable {
     @FXML
     JFXPasswordField pwdText;
     
-    private UtilisateurServicesRemote utilisateurServiceRemote;
     /**
      * Initializes the controller class.
      */
@@ -64,19 +64,18 @@ public class LoginController implements Initializable {
     }    
     @FXML
       private void GoAcceuil(ActionEvent event) throws IOException, NamingException  {
-    	System.out.println(loginText.getText());
+     	System.out.println(loginText.getText());
     	System.out.println(pwdText.getText());
 
     	 Accueil_clientController accueil_clientController= new Accueil_clientController();
          Utilisateur utilisateur= new Utilisateur();
          utilisateur=null;
-         Utilites.context= new InitialContext();
-		 Utilites.utilisateurServicesRemote= (UtilisateurServicesRemote) Utilites.context.lookup(Utilites.utilRemote);
-	     if ((utilisateur=Utilites.utilisateurServicesRemote.login(loginText.getText(), pwdText.getText()))!=null)
+         UtilisateurServices us= new UtilisateurServices();
+	     if ((utilisateur=us.login(loginText.getText(), pwdText.getText()))!=null)
 	     {System.out.println(loginText.getText());
 	     if(utilisateur.getRole()==(Role.valueOf("Administrateur")))
 	      utilites.newStage(Login, "AccueilAdmin.fxml","accueil");
-	     else
+             else if(utilisateur.getRole()==(Role.valueOf("Client")))
 		  utilites.newStage(Login, "Accueil_client.fxml","accueil");
 		  Accueil_clientController.utilisateurConnecte=utilisateur;		        	
 		  }
@@ -88,7 +87,7 @@ public class LoginController implements Initializable {
 	       ButtonType buttonTypeCancel = new ButtonType("non", ButtonData.CANCEL_CLOSE);     
 	       alert.getButtonTypes().setAll(buttonTypeCancel);   
 	       Optional<ButtonType> result = alert.showAndWait();  
-		   }		
+		   }
     }
     
 }

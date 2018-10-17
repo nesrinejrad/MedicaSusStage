@@ -3,25 +3,28 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tn.MedicaSud.app.client.gui;
+package GUI;
 
 import GUI.Accueil_clientController;
-import tn.MedicaSud.app.client.gui.Utilites;
-import tn.MedicaSud.entities.EtatTicket;
-import tn.MedicaSud.entities.Materiel;
-import tn.MedicaSud.entities.Ticket;
-import tn.MedicaSud.services.TicketSerciesRemote;
+import GUI.Utilites;
+import Entities.EtatTicket;
+import Entities.Materiel;
+import Entities.Ticket;
+import Services.TicketServices;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXToggleButton;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -115,6 +118,7 @@ public class Consulter_ticketController implements Initializable {
     @FXML
     private ImageView ImageDeconnexion;
     private ObservableList<Ticket> data;
+    TicketServices ts = new TicketServices();
     /**
      * Initializes the controller class.
      */
@@ -130,7 +134,7 @@ public class Consulter_ticketController implements Initializable {
        	   img = new Image("Assets/icons8-ajouter-32.png");
        	   ImgNouveauTicket.setImage(img);
        	   
-       	   img = new Image("Assets/Demande.png");
+       	   img = new Image("Assets/demande.png");
        	   ImgDemandeMateriel.setImage(img);
        	   
        	   img = new Image("Assets/icons8-editer-le-fichier-80.png");
@@ -141,23 +145,15 @@ public class Consulter_ticketController implements Initializable {
        	   
        	imgAccceuil.setImage(img);
        	  
-			try {
-				utilites.context = new InitialContext();
-				utilites.ticketSerciesRemote=(TicketSerciesRemote) utilites.context.lookup(utilites.ticketRemote);
-				List<Ticket> tickets=utilites.ticketSerciesRemote.findAll();
-				List<Ticket> ticketsFinal= new ArrayList<Ticket>();
-				System.out.println(tickets.size());
-				for (Ticket ticket : tickets) {
-					if(ticket.getUtilisateur().getCode().equals(Accueil_clientController.utilisateurConnecte.getCode()))
-					{
-						ticketsFinal.add(ticket);
-					}
-					System.out.println("final="+ticketsFinal.size());
-					data=FXCollections.observableList(ticketsFinal);
-				}
-			} catch (NamingException e) {
-			
-			}
+			try {   
+				List<Ticket> tickets=ts.displayTicketParUtilisateur(Accueil_clientController.utilisateurConnecte.getCode());
+                                       
+				
+					data=FXCollections.observableList(tickets);
+				} catch (SQLException ex) {
+                 Logger.getLogger(Consulter_ticketController.class.getName()).log(Level.SEVERE, null, ex);
+             }
+		
 			
 			
        		
@@ -190,8 +186,7 @@ public class Consulter_ticketController implements Initializable {
 			 	 this.tickets.setItems(data);
 			 	
 		
-       	   
-       	   
+      
        	   
 
     }    
@@ -242,17 +237,15 @@ public class Consulter_ticketController implements Initializable {
            utilites.newStage(Deconnexion, "Demande_materiel.fxml", " demande matériel");
     }
     @FXML
-    private void ETatTicketAction(ActionEvent event) throws IOException {
-    	if (ETatTicketButton.isSelected())
-    	{try {
+    private void ETatTicketAction(ActionEvent event) throws IOException, SQLException {
+    if (ETatTicketButton.isSelected())
+    	{
     		data.clear();
-			utilites.context = new InitialContext();
-			utilites.ticketSerciesRemote=(TicketSerciesRemote) utilites.context.lookup(utilites.ticketRemote);
-			List<Ticket> tickets=utilites.ticketSerciesRemote.findAll();
+			List<Ticket> tickets=ts.displayAll();
 			List<Ticket> ticketsFinal= new ArrayList<Ticket>();
 			System.out.println(tickets.size());
 			for (Ticket ticket : tickets) {
-				if(ticket.getUtilisateur().getCode()==Accueil_clientController.utilisateurConnecte.getCode())
+				if(ticket.getUtilisateur()==Accueil_clientController.utilisateurConnecte.getCode())
 				{  if(ticket.getEtatTicket().equals(EtatTicket.valueOf("résolu")))
 				{	ticketsFinal.add(ticket);
 }
@@ -266,10 +259,7 @@ public class Consulter_ticketController implements Initializable {
 				this.tickets.setItems(data);
 				
 			}
-		} catch (NamingException e) {
-		
-		}
-    	}
+            	}
     	else
            utilites.newStage(Deconnexion, "Consulter_ticket.fxml", " demande matériel");
     }

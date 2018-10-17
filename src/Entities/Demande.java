@@ -18,7 +18,7 @@ public class Demande {
 	private Date dateDemande;
 	private String description;
 	private StatutTicket status;
-	private Utilisateur utilisateur;
+	private String utilisateur_code;
 	public int getId() {
 		return id;
 	}
@@ -43,12 +43,15 @@ public class Demande {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public Utilisateur getUtilisateur() {
-		return utilisateur;
-	}
-	public void setUtilisateur(Utilisateur utilisateur) {
-		this.utilisateur = utilisateur;
-	}
+
+    public String getUtilisateur_code() {
+        return utilisateur_code;
+    }
+
+    public void setUtilisateur_code(String utilisateur_code) {
+        this.utilisateur_code = utilisateur_code;
+    }
+
 
 	
 	public Demande(int id, TypeMateriel typeMateriel, Date dateDemande, String description, Utilisateur utilisateur
@@ -58,7 +61,7 @@ public class Demande {
 		this.typeMateriel = typeMateriel;
 		this.dateDemande = dateDemande;
 		this.description = description;
-		this.utilisateur = utilisateur;
+		
 	}
 	public Demande() {
 		

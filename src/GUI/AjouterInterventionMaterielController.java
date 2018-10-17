@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tn.MedicaSud.app.client.gui;
+package GUI;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
@@ -24,11 +24,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
-import tn.MedicaSud.entities.Intervention;
-import tn.MedicaSud.entities.Materiel;
-import tn.MedicaSud.services.InterventionServicesRemote;
-import tn.MedicaSud.services.MaterielServicesRemote;
-
+import Entities.Intervention;
+import Entities.Materiel;
+import Services.InterventionServices;
+import Services.MaterielService;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  * FXML Controller class
  *
@@ -62,7 +65,8 @@ public class AjouterInterventionMaterielController implements Initializable {
     private JFXComboBox MaterielIntervention;
     Utilites utilities= new Utilites();
     ObservableList<String> dataMateriels=FXCollections.observableArrayList();
-
+    InterventionServices is= new InterventionServices();
+    MaterielService ms= new MaterielService();
 
     /**
      * Initializes the controller class.
@@ -72,10 +76,8 @@ public class AjouterInterventionMaterielController implements Initializable {
        etatIntervention.setVisible(false);
        labelEtat.setVisible(false);
        
-   	try {
-		utilities.context= new InitialContext();
-		utilities.materielServicesRemote=(MaterielServicesRemote) utilities.context.lookup(utilities.materielRemote);
-	   	List<Materiel> materiels= utilities.materielServicesRemote.findAll();
+  	try {
+	   	List<Materiel> materiels= ms.displayAll();
 	   			
 	    	 for (Materiel materiel1 : materiels) {
 	     		 System.out.println(materiel1.getReference());
@@ -83,16 +85,14 @@ public class AjouterInterventionMaterielController implements Initializable {
 	     		 //dataMateriels.
 	   	}
 	     	 MaterielIntervention.setItems(dataMateriels);
-	} catch (NamingException e) {
-		
-	}
+        } catch (SQLException ex) {
+            Logger.getLogger(AjouterInterventionMaterielController.class.getName()).log(Level.SEVERE, null, ex);
+        }
    	
     }    
 
     @FXML
-    private void EnregistrerIntervetnion(ActionEvent event) throws NamingException    {
-    	utilities.context= new InitialContext();
-    	utilities.materielServicesRemote= (MaterielServicesRemote) utilities.context.lookup(utilities.materielRemote);
+    private void EnregistrerIntervetnion(ActionEvent event) throws NamingException, SQLException    {
     	String mat=(String) MaterielIntervention.getValue();
     	Integer i=0;
     	for (String string : dataMateriels) {
@@ -100,19 +100,16 @@ public class AjouterInterventionMaterielController implements Initializable {
 				i++;
 			}
 		}
-    	utilities.context= new InitialContext();
-		utilities.materielServicesRemote=(MaterielServicesRemote) utilities.context.lookup(utilities.materielRemote);
-	   	List<Materiel> materiels= utilities.materielServicesRemote.findAll();
+	   	List<Materiel> materiels= ms.displayAll();
     	
     	Materiel materiel=materiels.get(i);
     	Intervention intervention= new Intervention();
     	intervention.setId(IdentifiantIntervention.getText());
-    	intervention.setDateIntervention(DateIntervention.getValue());
+    	intervention.setDateIntervention(Date.valueOf(DateIntervention.getValue()));
     	intervention.setDescription(DescriptionIntervention.getText());
-    	intervention.setMateriel(materiel);
+    	intervention.setMateriel(materiel.getId());
     	intervention.setPeriode(Integer.valueOf(PeriodeIntervention.getText()));
-    	utilities.interventionServicesRemote=(InterventionServicesRemote) utilities.context.lookup(utilities.interventionRemote);
-    	utilities.interventionServicesRemote.update(intervention);
+    	is.modifierIntervention(intervention);
     	utilities.closeStage(Enregistrer);
     	utilities.GenerertAletrtOk("intervention enregistrée avec succés");
     	}

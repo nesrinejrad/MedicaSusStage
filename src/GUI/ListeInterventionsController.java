@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tn.MedicaSud.app.client.gui;
+package GUI;
 
 import com.jfoenix.controls.JFXButton;
 
@@ -29,11 +29,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import tn.MedicaSud.entities.EtatTicket;
-import tn.MedicaSud.entities.Intervention;
-import tn.MedicaSud.entities.Materiel;
-import tn.MedicaSud.entities.Panne;
-import tn.MedicaSud.services.InterventionServicesRemote;
+import Entities.EtatTicket;
+import Entities.Intervention;
+import Entities.Materiel;
+import Entities.Panne;
+import Services.InterventionServices;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -77,7 +80,7 @@ public class ListeInterventionsController implements Initializable {
     @FXML
     private JFXButton consulterTicket;
     private ObservableList<Intervention> data;
-    
+    InterventionServices is= new InterventionServices();
 
     /**
      * Initializes the controller class.
@@ -87,20 +90,24 @@ public class ListeInterventionsController implements Initializable {
     	utilities.backgroundImage(imageMedicaSud);
     	List<Intervention> interventions= new ArrayList<Intervention>();
     	try {
-			utilities.context= new InitialContext();
-			utilities.interventionServicesRemote=(InterventionServicesRemote) utilities.context.lookup(utilities.interventionRemote);
-			interventions=utilities.interventionServicesRemote.findAll();
+			interventions=is.displayAll();
 			List<Intervention> interventions2= new ArrayList<Intervention>();
 			System.out.println(java.time.LocalDate.now());
 
 			for (Intervention intervention : interventions) {
-				System.out.println(intervention.getDateIntervention());
-
-				if(intervention.getDateIntervention().equals(java.time.LocalDate.now()))
-				{
+                                    if(intervention.getDateIntervention().toLocalDate().equals(java.time.LocalDate.now()))
+				{ 
 					interventions2.add(intervention);
 				}
+                 int day=(intervention.getDateIntervention().toLocalDate().getDayOfMonth())+intervention.getPeriode()-1;
+                            System.out.println(day);
+                 if(day==(java.time.LocalDate.now().getDayOfMonth())){
+                     System.out.println(intervention.getDateIntervention());
+                  interventions2.add(intervention);
+              }
+
 			}
+                        
 			  data=FXCollections.observableList(interventions2);		
 		 	  identifiantIntervention.setCellValueFactory(new PropertyValueFactory<>("id"));
 		 	  desriptionIntervention.setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -108,9 +115,11 @@ public class ListeInterventionsController implements Initializable {
 		 	 materielIntervention.setCellValueFactory(new PropertyValueFactory<>("materiel"));
 		 	  interventionTable.setItems(data);
 		 	   
-    	} catch (NamingException e) {
-		
-		}
+    	
+		} catch (SQLException ex) {
+            Logger.getLogger(ListeInterventionsController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
 
     }    
 
@@ -146,22 +155,21 @@ public class ListeInterventionsController implements Initializable {
         Stage newStage = new Stage();
         newStage.setScene(newScene);
         newStage.show();
-        this.initialize(null, null);}
+        this.initialize(null, null);
+    }
 
     @FXML
     private void interventionResoluAction(ActionEvent event) throws NamingException {
     	Intervention intervention= new Intervention();
     	intervention=interventionTable.getSelectionModel().getSelectedItem();
     	intervention.setEtatIntervention(EtatTicket.valueOf("résolu"));
-    	utilities.context= new InitialContext();
-    	utilities.interventionServicesRemote=(InterventionServicesRemote) utilities.context.lookup(utilities.interventionRemote);
-    	utilities.interventionServicesRemote.update(intervention);
+        is.modifierIntervention(intervention);
     	utilities.GenerertAletrtOk("intervention mise à jour");
     }
 
     @FXML
     private void changerDateAction(ActionEvent event) throws IOException {
-      	Intervention intervention= interventionTable.getSelectionModel().getSelectedItem();
+     	Intervention intervention= interventionTable.getSelectionModel().getSelectedItem();
     	ChangerDateIntervention changerDateIntervention= new ChangerDateIntervention();
     	FXMLLoader loader=new FXMLLoader(getClass().getResource("ChangerDateIntervention.fxml"));
         Parent root = (Parent) loader.load();

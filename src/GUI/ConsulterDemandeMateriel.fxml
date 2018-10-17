@@ -10,7 +10,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.MedicaSud.app.client.gui.ConsulterDemandeMaterielController">
+<BorderPane prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ConsulterDemandeMaterielController">
    <left>
       <AnchorPane prefHeight="339.0" prefWidth="200.0" style="-fx-background-color: #4682b4;" BorderPane.alignment="CENTER">
          <children>

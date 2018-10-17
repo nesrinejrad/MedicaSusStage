@@ -1,4 +1,4 @@
-package tn.MedicaSud.app.client.gui;
+package GUI;
 
 
 import java.net.URL;

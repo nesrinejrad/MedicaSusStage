@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tn.MedicaSud.app.client.gui;
+package GUI;
 
 import com.jfoenix.controls.JFXButton;
 
@@ -18,9 +18,6 @@ import java.util.ResourceBundle;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-
-import org.hibernate.internal.util.xml.FilteringXMLEventReader;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -36,12 +33,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import tn.MedicaSud.entities.Materiel;
-import tn.MedicaSud.entities.Panne;
-import tn.MedicaSud.entities.Utilisateur;
-import tn.MedicaSud.services.MaterielServicesRemote;
-import tn.MedicaSud.services.PanneServicesRemote;
-import tn.MedicaSud.services.UtilisateurServicesRemote;
+import Entities.Materiel;
+import Entities.Panne;
+import Entities.Utilisateur;
+import Services.PanneServices;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * FXML Controller class
@@ -79,7 +77,7 @@ public class GestionPannesController implements Initializable {
     @FXML
     private TableView<Panne> PanneTable;
     private ObservableList<Panne> data;
-
+    PanneServices ps = new PanneServices();
 
     /**
      * Initializes the controller class.
@@ -89,18 +87,16 @@ public class GestionPannesController implements Initializable {
     	utilies.backgroundImage(imageMedicaSud);
     	List<Panne> pannes= new ArrayList<Panne>();
    	   try {
-		utilies.context= new InitialContext();
-		utilies.panneServicesRemote= (PanneServicesRemote) utilies.context.lookup(utilies.panneRemote);
-		pannes=utilies.panneServicesRemote.findAll();
+		pannes=ps.displayAll();
 		data=FXCollections.observableList(pannes);	
 		CodePanne.setCellValueFactory(new PropertyValueFactory<>("id"));
 	   	  DescriptionPanne.setCellValueFactory(new PropertyValueFactory<>("description"));
 	   	  TypeMateriel.setCellValueFactory(new PropertyValueFactory<>("typeMateriel"));
 	   	  SolutionPanne.setCellValueFactory(new PropertyValueFactory<>("solution"));
 	   	  this.PanneTable.setItems(data);
-   	   } catch (NamingException e) {
-		
-	}	
+   	   } catch (SQLException ex) { 	
+                Logger.getLogger(GestionPannesController.class.getName()).log(Level.SEVERE, null, ex);
+            } 	
     }    
 
     @FXML
@@ -127,13 +123,15 @@ public class GestionPannesController implements Initializable {
 
     @FXML
     private void supprimerAction(ActionEvent event) throws NamingException {
-    	Panne panne= new Panne();
-    	panne=PanneTable.getSelectionModel().getSelectedItem();
-    	utilies.context= new InitialContext();
-    	utilies.panneServicesRemote=(PanneServicesRemote) utilies.context.lookup(utilies.panneRemote);
-    	utilies.panneServicesRemote.delete(panne);
-    	utilies.GenerertAletrtOk("panne supprimée avec succes");
-    	this.initialize(null, null);
+            try {
+                Panne panne= new Panne();
+                panne=PanneTable.getSelectionModel().getSelectedItem();
+                ps.supprimerPanne(panne);
+                utilies.GenerertAletrtOk("panne supprimée avec succes");
+                this.initialize(null, null);
+            } catch (SQLException ex) {
+                Logger.getLogger(GestionPannesController.class.getName()).log(Level.SEVERE, null, ex);
+            }
     	
     }
 

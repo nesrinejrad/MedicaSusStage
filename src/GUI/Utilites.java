@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tn.MedicaSud.app.client.gui;
+package GUI;
 
 
 import javafx.scene.control.Alert;
@@ -28,34 +28,14 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.stage.Stage;
-import tn.MedicaSud.services.DemandeServicesRemote;
-import tn.MedicaSud.services.FournisseurServicesRemote;
-import tn.MedicaSud.services.InterventionServicesRemote;
-import tn.MedicaSud.services.MaterielServicesRemote;
-import tn.MedicaSud.services.PanneServicesRemote;
-import tn.MedicaSud.services.TicketSerciesRemote;
-import tn.MedicaSud.services.UtilisateurServicesRemote;
+
 
 /**
  *
  * @author USER
  */
 public class Utilites {
-    public static UtilisateurServicesRemote utilisateurServicesRemote;
-    public static TicketSerciesRemote ticketSerciesRemote;
-    public static DemandeServicesRemote demandeServicesRemote;
-    static MaterielServicesRemote materielServicesRemote;
-    static PanneServicesRemote panneServicesRemote;
-    static InterventionServicesRemote interventionServicesRemote;
-    static FournisseurServicesRemote fournisseurServicesRemote;
-    static String FournisseurRemote="MedicaSud-ear/MedicaSud-service/FournisseurServices!tn.MedicaSud.services.FournisseurServicesRemote";
-    public static String utilRemote="MedicaSud-ear/MedicaSud-service/UtilisateurServices!tn.MedicaSud.services.UtilisateurServicesRemote";
-    static String panneRemote="MedicaSud-ear/MedicaSud-service/PanneServices!tn.MedicaSud.services.PanneServicesRemote";
-    static String ticketRemote="MedicaSud-ear/MedicaSud-service/TicketSercies!tn.MedicaSud.services.TicketSerciesRemote";
-    static String demandeRemote="MedicaSud-ear/MedicaSud-service/DemandeServices!tn.MedicaSud.services.DemandeServicesRemote";
-    static String materielRemote="MedicaSud-ear/MedicaSud-service/MaterielServices!tn.MedicaSud.services.MaterielServicesRemote";
-    public static Context context;
-    static String interventionRemote="MedicaSud-ear/MedicaSud-service/InterventionServices!tn.MedicaSud.services.InterventionServicesRemote";
+  
     public void newStage(JFXButton button , String fxml , String Title) throws IOException
     {
          FXMLLoader loader=new FXMLLoader(getClass().getResource(fxml));

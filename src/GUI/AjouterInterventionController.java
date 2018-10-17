@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tn.MedicaSud.app.client.gui;
+package GUI;
 
 import com.jfoenix.controls.JFXButton;
 
@@ -13,7 +13,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 
-import Utilities.SendMail;
+import Utiles.SendMail;
 
 
 import java.io.IOException;
@@ -24,9 +24,6 @@ import java.util.ResourceBundle;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-
-import org.hibernate.internal.util.xml.FilteringXMLEventReader;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -38,19 +35,17 @@ import javafx.scene.control.*;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import tn.MedicaSud.entities.EtatTicket;
-import tn.MedicaSud.entities.Fournisseur;
-import tn.MedicaSud.entities.Intervention;
-import tn.MedicaSud.entities.Materiel;
-import tn.MedicaSud.entities.Role;
-import tn.MedicaSud.entities.StatutTicket;
-import tn.MedicaSud.entities.Ticket;
-import tn.MedicaSud.entities.TypeMateriel;
-import tn.MedicaSud.entities.Utilisateur;
-import tn.MedicaSud.services.FournisseurServicesRemote;
-import tn.MedicaSud.services.InterventionServicesRemote;
-import tn.MedicaSud.services.MaterielServicesRemote;
-import tn.MedicaSud.services.UtilisateurServicesRemote;
+import Entities.EtatTicket;
+import Entities.Fournisseur;
+import Entities.Intervention;
+import Entities.Materiel;
+import Entities.Role;
+import Entities.StatutTicket;
+import Entities.Ticket;
+import Entities.TypeMateriel;
+import Entities.Utilisateur;
+import Services.InterventionServices;
+import java.sql.Date;
 import javafx.scene.text.*;
 
 /**
@@ -59,7 +54,7 @@ import javafx.scene.text.*;
  * @author USER
  */
 public class AjouterInterventionController implements Initializable {
-	@FXML
+   @FXML
     private JFXTextField IdentifiantIntervention;
     @FXML
     private JFXTextField DescriptionIntervention;
@@ -82,7 +77,8 @@ public class AjouterInterventionController implements Initializable {
     private Label labelEtat;
     @FXML
     private JFXComboBox<?> etatIntervention;
-
+    InterventionServices is= new InterventionServices();
+    boolean modif=false;
 
     /**
      * Initializes the controller class.
@@ -106,19 +102,18 @@ public class AjouterInterventionController implements Initializable {
     private void EnregistrerIntervetnion(ActionEvent event) throws NamingException  {
     	
     	Intervention intervention= new Intervention();
-    	
-    	{intervention.setId(IdentifiantIntervention.getText());
+    	//intervention=null;
+        System.out.println(IdentifiantIntervention.getText());
+    	intervention.setId(IdentifiantIntervention.getText());
     	intervention.setDescription(DescriptionIntervention.getText());
-    	intervention.setDateIntervention(DateIntervention.getValue());
+    	intervention.setDateIntervention(Date.valueOf(DateIntervention.getValue()));
     	intervention.setMateriel(ticket.getMateriel());
     	intervention.setPeriode(0);
-    	intervention.setTicket(ticket);
+    	intervention.setTicket(ticket.getId());
     	intervention.setEtatIntervention(EtatTicket.valueOf("enCours"));
     	
-    	utilities.context= new InitialContext();
-    	utilities.interventionServicesRemote= (InterventionServicesRemote) utilities.context.lookup(utilities.interventionRemote);
-    	utilities.interventionServicesRemote.update(intervention);
-    	utilities.GenerertAletrtOk("intervention enregistrée");
+        is.ajouterIntervention(intervention);    	
+        utilities.GenerertAletrtOk("intervention enregistrée");
     	
     	
     }
@@ -128,4 +123,3 @@ public class AjouterInterventionController implements Initializable {
 
     
     
-}

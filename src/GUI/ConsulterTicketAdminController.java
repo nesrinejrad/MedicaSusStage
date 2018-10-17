@@ -3,25 +3,28 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tn.MedicaSud.app.client.gui;
+package GUI;
 
-import tn.MedicaSud.app.client.gui.Utilites;
-import tn.MedicaSud.entities.EtatTicket;
-import tn.MedicaSud.entities.Intervention;
-import tn.MedicaSud.entities.Materiel;
-import tn.MedicaSud.entities.Ticket;
-import tn.MedicaSud.services.TicketSerciesRemote;
+import GUI.Utilites;
+import Entities.EtatTicket;
+import Entities.Intervention;
+import Entities.Materiel;
+import Entities.Ticket;
+import Services.TicketServices;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXToggleButton;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -106,7 +109,7 @@ public class ConsulterTicketAdminController implements Initializable {
     private AnchorPane imageMedicaSud;
     @FXML
     private JFXButton consulterTicket;
-   
+    TicketServices ts= new TicketServices();
  
 
     private ObservableList<Ticket> data;
@@ -118,13 +121,11 @@ public class ConsulterTicketAdminController implements Initializable {
              
     	utilites.backgroundImage(imageMedicaSud);
     	try {
-			utilites.context = new InitialContext();
-			utilites.ticketSerciesRemote=(TicketSerciesRemote) utilites.context.lookup(utilites.ticketRemote);
-			List<Ticket> tickets=utilites.ticketSerciesRemote.findAll();
+			List<Ticket> tickets=ts.displayAll();
 			data=FXCollections.observableList(tickets);
-		} catch (NamingException e) {
-			
-		}
+		} catch (SQLException ex) { 
+                 Logger.getLogger(ConsulterTicketAdminController.class.getName()).log(Level.SEVERE, null, ex);
+             }
     	materielTicket.setCellValueFactory(new PropertyValueFactory<>("materiel"));
 	 	  DescriptionTicket.setCellValueFactory(new PropertyValueFactory<>("discription"));
 	 	  DateCreationTicket.setCellValueFactory(new PropertyValueFactory<>("sateCreation"));
@@ -152,7 +153,7 @@ public class ConsulterTicketAdminController implements Initializable {
 			});
 	 	 UtilisateurTicket.setCellValueFactory(new PropertyValueFactory<>("utilisateur"));
 	 	 this.tickets.setItems(data);
-	 	
+                     
        	   
        	   
 
@@ -191,6 +192,7 @@ public class ConsulterTicketAdminController implements Initializable {
     private void ETatTicketAction(ActionEvent event) 
     
     {
+        
     	
     }
     @FXML

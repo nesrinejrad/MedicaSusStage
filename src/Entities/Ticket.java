@@ -18,26 +18,36 @@ public class Ticket {
 	private String description;
 	private TypeMateriel typeMateriel;
 	private EtatTicket etatTicket;
-	private Panne panne;
+	private int panne_id;
 	private StatutTicket statutTicket;
-	private Materiel materiel;
-	private Utilisateur utilisateur;
+	private String materiel_id;
+	private String utilisateur_id;
 	private List<Intervention> interventions;
+
+    public Date getDateCreation() {
+        return dateCreation;
+    }
+
+    public void setDateCreation(Date dateCreation) {
+        this.dateCreation = dateCreation;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 	
 	
-	private static final long serialVersionUID = 1L;
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
-	public Date getSateCreation() {
-		return dateCreation;
-	}
-	public void setSateCreation(Date dateCreation) {
-		this.dateCreation = dateCreation;
-	}
+
 	public String getDiscription() {
 		return description;
 	}
@@ -62,11 +72,11 @@ public class Ticket {
 	public void setStatutTicket(StatutTicket statutTicket) {
 		this.statutTicket = statutTicket;
 	}
-	public Utilisateur getUtilisateur() {
-		return utilisateur;
+	public String getUtilisateur() {
+		return utilisateur_id;
 	}
-	public void setUtilisateur(Utilisateur utilisateur) {
-		this.utilisateur = utilisateur;
+	public void setUtilisateur(String utilisateur) {
+		this.utilisateur_id = utilisateur;
 	}
 	
 	public List<Intervention> getInterventions() {
@@ -89,11 +99,11 @@ public class Ticket {
 		super();
 	}
 	
-	public Materiel getMateriel() {
-		return materiel;
+	public String getMateriel() {
+		return materiel_id;
 	}
-	public void setMateriel(Materiel materiel) {
-		this.materiel = materiel;
+	public void setMateriel(String materiel) {
+		this.materiel_id = materiel;
 	}
 	@Override
 	public String toString() {
@@ -101,11 +111,11 @@ public class Ticket {
 				+ ", typeMateriel=" + typeMateriel + ", etatTicket=" + etatTicket + ", statutTicket=" + statutTicket
 				+"]";
 	}
-	public Panne getPanne() {
-		return panne;
+	public int getPanne() {
+		return panne_id;
 	}
-	public void setPanne(Panne panne) {
-		this.panne = panne;
+	public void setPanne(int panne) {
+		this.panne_id = panne;
 	}
 	
     

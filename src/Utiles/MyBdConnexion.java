@@ -15,28 +15,31 @@ import java.sql.SQLException;
  * @author USER
  */
 public class MyBdConnexion {
-    String url="jdbc:mysql:"+"//localhost:3306/ParcInformatiquedb";
-    String login="root";
-    String pwd="";
-    Connection connection;
-    static MyBdConnexion instanceBD;
-    
-    private MyBdConnexion() throws SQLException
-    {
-        connection = DriverManager.getConnection(url,login,pwd);
-        System.err.println("connexion établie!");
+    public String url="jdbc:mysql://192.168.1.4/parcinformatiquedb";
+    public String login="root";
+    public String pwd="";
+    Connection cnx;
+    public static MyBdConnexion instance;
+    private  MyBdConnexion() {
+            
+         try {
+             cnx= (Connection) DriverManager.getConnection(url,login,pwd);
+         } catch (SQLException ex) {
+         
+             System.err.println(ex.getMessage());
+         }
         
     }
-    
-    public  static  MyBdConnexion getInstanceBD() throws SQLException
+    public static  MyBdConnexion getInstance()
     {
-        if(instanceBD==null)
-            instanceBD= new MyBdConnexion();
-        return instanceBD;
+        if(instance==null)
+            instance=new  MyBdConnexion();
+        return(instance);
     }
     
     public Connection getConnection()
     {
-        return connection;
+        return(cnx);
     }
+    
 }

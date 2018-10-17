@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tn.MedicaSud.app.client.gui;
+package GUI;
 
 import com.jfoenix.controls.JFXButton;
 import javafx.stage.Stage;
@@ -35,12 +35,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
-import tn.MedicaSud.entities.Materiel;
-import tn.MedicaSud.entities.Role;
-import tn.MedicaSud.entities.StatutTicket;
-import tn.MedicaSud.entities.Utilisateur;
-import tn.MedicaSud.services.MaterielServicesRemote;
-import tn.MedicaSud.services.UtilisateurServicesRemote;
+import Entities.Materiel;
+import Entities.Role;
+import Entities.StatutTicket;
+import Entities.Utilisateur;
+import Services.MaterielService;
+import Services.UtilisateurServices;
+import java.sql.SQLException;
 
 /**
  * FXML Controller class
@@ -72,7 +73,8 @@ public class ConsulterMaterielParUtilisateurController implements Initializable 
     private TableView<Materiel> materiels;
    static Utilisateur utilisateur= new Utilisateur();
     Utilites utilities= new Utilites();
- 
+    MaterielService ms = new MaterielService();
+    UtilisateurServices us = new UtilisateurServices();
 
     /**
      * Initializes the controller class.
@@ -89,9 +91,9 @@ public class ConsulterMaterielParUtilisateurController implements Initializable 
     
     }
     
-    public void RemplirTable(Utilisateur utilisateur)
-    {	
-    	List<Materiel> materiels= new ArrayList<Materiel>();
+    public void RemplirTable(Utilisateur utilisateur) throws SQLException
+    {	MaterielService ms=new MaterielService();
+    	List<Materiel> materiels= ms.displayAllMaterielParUtilisateur(utilisateur.getCode());
   	   materiels.addAll(utilisateur.getMateriels());
   	   data=FXCollections.observableList(materiels);		
   	   System.out.println("data="+data.size());
@@ -108,14 +110,12 @@ public class ConsulterMaterielParUtilisateurController implements Initializable 
   	  
     
     }
-    public void RemplirTableTout() throws NamingException
+    public void RemplirTableTout() throws NamingException, SQLException
     {	
     	List<Materiel> materiels= new ArrayList<Materiel>();
     	List<Materiel> materiels1= new ArrayList<Materiel>();
     	List<Utilisateur> utilisateurs= new ArrayList<Utilisateur>();
-    	utilities.context= new InitialContext();
-    	utilities.materielServicesRemote= (MaterielServicesRemote) utilities.context.lookup(utilities.materielRemote);
-  	   materiels=utilities.materielServicesRemote.findAll();
+  	   materiels=ms.displayAll();
   	   for (Materiel materiel : materiels) {
   		 boolean exist=false;
   		  utilisateurs=materiel.getUtilisateurs();
@@ -138,7 +138,7 @@ public class ConsulterMaterielParUtilisateurController implements Initializable 
     
     }
     @FXML
-    private void AjouterMaterielUtilisateur() throws NamingException, IOException
+    private void AjouterMaterielUtilisateur() throws NamingException, IOException, SQLException
     {
     	
     	Stage stage = (Stage) Ajouter.getScene().getWindow();
@@ -162,9 +162,7 @@ public class ConsulterMaterielParUtilisateurController implements Initializable 
     	materiels=utilisateur.getMateriels();
     	materiels.remove(materiel);
     	utilisateur.setMateriels(materiels);
-    	utilities.context=new InitialContext();
-    	utilities.utilisateurServicesRemote=(UtilisateurServicesRemote) utilities.context.lookup(utilities.utilRemote);
-    	utilities.utilisateurServicesRemote.update(utilisateur);
+    	us.modifierUtilisateur(utilisateur);
     	//utilities.closeStage(Ajouter);
     	Stage stage = (Stage) Ajouter.getScene().getWindow();
     	stage.show();
@@ -179,13 +177,13 @@ public class ConsulterMaterielParUtilisateurController implements Initializable 
     	materiels=utilisateur.getMateriels();
     	materiels.add(materiel);
     	utilisateur.setMateriels(materiels);
-    	utilities.utilisateurServicesRemote=(UtilisateurServicesRemote) utilities.context.lookup(utilities.utilRemote);
-    	utilities.utilisateurServicesRemote.update(utilisateur);
+    	us.modifierUtilisateur(utilisateur);
     	Stage stage = (Stage) Ajouter.getScene().getWindow();
     	stage.close();
     	
     	utilities.GenerertAletrtOk("Materiel affecter avec succes");
     	
+              
     }
     
 

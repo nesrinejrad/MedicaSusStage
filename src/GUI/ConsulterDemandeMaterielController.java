@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tn.MedicaSud.app.client.gui;
+package GUI;
 
 import GUI.Accueil_clientController;
 import com.jfoenix.controls.JFXButton;
@@ -32,14 +32,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
-import tn.MedicaSud.entities.Demande;
-import tn.MedicaSud.entities.EtatTicket;
-import tn.MedicaSud.entities.Materiel;
-import tn.MedicaSud.entities.StatutTicket;
-import tn.MedicaSud.entities.Ticket;
-import tn.MedicaSud.entities.Utilisateur;
-import tn.MedicaSud.services.DemandeServicesRemote;
-import tn.MedicaSud.services.TicketSerciesRemote;
+import Entities.Demande;
+import Entities.EtatTicket;
+import Entities.Materiel;
+import Entities.StatutTicket;
+import Entities.Ticket;
+import Entities.Utilisateur;
+import Services.DemandeService;
+import java.sql.SQLException;
 
 /**
  * FXML Controller class
@@ -96,7 +96,7 @@ public class ConsulterDemandeMaterielController implements Initializable {
     private TableColumn<Demande,StatutTicket > status;
     Utilites utilies= new Utilites();
     private ObservableList<Demande> data;
-
+    DemandeService ds= new DemandeService();
     /**
      * Initializes the controller class.
      */
@@ -175,23 +175,20 @@ public class ConsulterDemandeMaterielController implements Initializable {
     	Accueil_clientController.utilisateurConnecte=null;
     }
     
-    public void remplirDemandeUtilisateur()
-    {try {
-		utilies.context = new InitialContext();
-		utilies.demandeServicesRemote=(DemandeServicesRemote) utilies.context.lookup(utilies.demandeRemote);
-		List<Demande> demandes=utilies.demandeServicesRemote.findAll();
+    public void remplirDemandeUtilisateur() throws SQLException
+    {
+		List<Demande> demandes=ds.displayAll();
 		List<Demande> demandesUtilisateur= new ArrayList<Demande>();
 		for (Demande demande : demandes) {
-			if(demande.getUtilisateur().getCode().equals(Accueil_clientController.utilisateurConnecte.getCode()))
+	if(demande.getUtilisateur_code().equals(Accueil_clientController.utilisateurConnecte.getCode()))
 			{	System.out.println("*********");
 				demandesUtilisateur.add(demande);
 			}
 		}
 		data=FXCollections.observableList(demandesUtilisateur);
-	} catch (NamingException e) {
+	
 		
-	}
-	  type.setCellValueFactory(new PropertyValueFactory<>("type"));
+		  type.setCellValueFactory(new PropertyValueFactory<>("type"));
  	  description.setCellValueFactory(new PropertyValueFactory<>("description"));
  	  date.setCellValueFactory(new PropertyValueFactory<>("date"));
  	  status.setCellValueFactory(new PropertyValueFactory<>("status"));
@@ -200,15 +197,11 @@ public class ConsulterDemandeMaterielController implements Initializable {
     	
     }
     
-    public void remplirDemandeAdmin()
-    {try {
-		utilies.context = new InitialContext();
-		utilies.demandeServicesRemote=(DemandeServicesRemote) utilies.context.lookup(utilies.demandeRemote);
-		List<Demande> demandes=utilies.demandeServicesRemote.findAll();
+    public void remplirDemandeAdmin() throws SQLException
+    {
+		List<Demande> demandes=ds.displayAll();
 		data=FXCollections.observableList(demandes);
-	} catch (NamingException e) {
-		
-	}
+	
 	  type.setCellValueFactory(new PropertyValueFactory<>("type"));
  	  description.setCellValueFactory(new PropertyValueFactory<>("description"));
  	  date.setCellValueFactory(new PropertyValueFactory<>("date"));

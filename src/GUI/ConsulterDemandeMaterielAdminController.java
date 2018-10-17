@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tn.MedicaSud.app.client.gui;
+package GUI;
 
 import com.jfoenix.controls.JFXButton;
 import javafx.stage.Stage;
@@ -37,17 +37,18 @@ import javafx.scene.image.ImageView;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
-import tn.MedicaSud.entities.Demande;
-import tn.MedicaSud.entities.EtatTicket;
-import tn.MedicaSud.entities.Materiel;
-import tn.MedicaSud.entities.Role;
-import tn.MedicaSud.entities.StatutTicket;
-import tn.MedicaSud.entities.Ticket;
-import tn.MedicaSud.entities.Utilisateur;
-import tn.MedicaSud.services.DemandeServicesRemote;
-import tn.MedicaSud.services.MaterielServicesRemote;
-import tn.MedicaSud.services.TicketSerciesRemote;
-import tn.MedicaSud.services.UtilisateurServicesRemote;
+import Entities.Demande;
+import Entities.EtatTicket;
+import Entities.Materiel;
+import Entities.Role;
+import Entities.StatutTicket;
+import Entities.Ticket;
+import Entities.Utilisateur;
+import Services.DemandeService;
+import Services.MaterielService;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * FXML Controller class
@@ -78,7 +79,8 @@ public class ConsulterDemandeMaterielAdminController implements Initializable {
    static Utilisateur utilisateur= new Utilisateur();
     Utilites utilities= new Utilites();
     private ObservableList<Demande> data;
-
+    DemandeService ds= new DemandeService();
+    MaterielService ms = new MaterielService();
 
     /**
      * Initializes the controller class.
@@ -86,13 +88,11 @@ public class ConsulterDemandeMaterielAdminController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     	try {
-    		utilities.context = new InitialContext();
-    		utilities.demandeServicesRemote=(DemandeServicesRemote) utilities.context.lookup(utilities.demandeRemote);
-    		List<Demande> demandes=utilities.demandeServicesRemote.findAll();
+    		List<Demande> demandes=ds.displayAll();
     		data=FXCollections.observableList(demandes);
-    	} catch (NamingException e) {
-    		
-    	}
+    	}  catch (SQLException ex) {
+            Logger.getLogger(ConsulterDemandeMaterielAdminController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     	  type.setCellValueFactory(new PropertyValueFactory<>("type"));
      	  description.setCellValueFactory(new PropertyValueFactory<>("description"));
      	  date.setCellValueFactory(new PropertyValueFactory<>("date"));

@@ -16,7 +16,7 @@ import java.sql.SQLException;
 public class TestConnexion {
     static Connection connection;
     public static void main(String[] args) throws SQLException {
-        connection= MyBdConnexion.getInstanceBD().getConnection();
+        connection= MyBdConnexion.getInstance().getConnection();
         if(connection!=null)
         {
             System.out.println("Tests.TestConnexion.main()");

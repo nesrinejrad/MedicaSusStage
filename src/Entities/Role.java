@@ -10,6 +10,7 @@ package Entities;
  *
  * @author USER
  */
+ 
 public enum Role {
-    Administrateur,Client
+    Client,Administrateur
 }

@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tn.MedicaSud.app.client.gui;
+package GUI;
 
-import tn.MedicaSud.app.client.gui.Utilites;
-import tn.MedicaSud.entities.Panne;
-import tn.MedicaSud.entities.TypeMateriel;
-import tn.MedicaSud.services.PanneServicesRemote;
 
+
+import Entities.Panne;
+import Entities.TypeMateriel;
+import Services.PanneServices;
 import java.awt.TextField;
 import java.io.IOException;
 import java.net.URL;
@@ -52,13 +52,12 @@ public class Nouvelle_PannesController implements Initializable {
     @FXML
     private Label  Solution;
     private ObservableList<String> dateTypeMateriel=FXCollections.observableArrayList();
-    private PanneServicesRemote panneServiceRemote;
     static int dim1;
     static int dim2;
     @FXML
     private Label idLabel;
     boolean modif=false;
-
+    PanneServices ps = new PanneServices();
     /**
      * Initializes the controller class.
      */
@@ -80,26 +79,29 @@ public class Nouvelle_PannesController implements Initializable {
 
     @FXML
     private void ValiderNouvellePanneAction(ActionEvent event) throws NamingException, IOException {
-       Context context= new InitialContext();
-		 panneServiceRemote=(PanneServicesRemote) context.lookup("MedicaSud-ear/MedicaSud-service/PanneServices!tn.MedicaSud.services.PanneServicesRemote");
 		 Panne panne= new Panne();
 		 if(modif==true)
 		 {
 			 panne.setId(Integer.valueOf(idLabel.getText()));
-		 }
+		 
+                 
 		 panne.setTypeMateriel(TypeMateriel.valueOf(Type.getValue()));
 		 panne.setDescription(description.getText());
 		 if(solutionText!=null)
 		 {
 			 panne.setSolution(solutionText.getText());
-			 panneServiceRemote.update(panne);
-		     utilites.closeStage(ValiderNouvellePanne);
+                         ps.modifierPanne(panne);
+                         utilites.closeStage(ValiderNouvellePanne);
 			 
-		 }
+		 }}
 		 else
-		 { panneServiceRemote.save(panne);
+		 {  panne.setTypeMateriel(TypeMateriel.valueOf(Type.getValue()));
+		 panne.setDescription(description.getText());
+                     			 panne.setSolution(solutionText.getText());
+
+                     ps.ajouterPAnne(panne);
 	     utilites.closeStage(ValiderNouvellePanne);
-	     FXMLLoader loader= new FXMLLoader(getClass().getResource("Ajouter_tickets.fxml"));
+	    /* FXMLLoader loader= new FXMLLoader(getClass().getResource("Ajouter_tickets.fxml"));
 	     Stage primaryStage= new Stage();
 	        Parent root = loader.load();                           
 	        Scene scene= new Scene(root);     
@@ -107,7 +109,7 @@ public class Nouvelle_PannesController implements Initializable {
 	        primaryStage.setWidth(dim1);
 	        primaryStage.setTitle("Ajout ticket");
 	        primaryStage.setScene(scene);
-	        primaryStage.show();}
+	        primaryStage.show();*/}
 	     
     }
     

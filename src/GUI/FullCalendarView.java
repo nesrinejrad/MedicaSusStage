@@ -1,4 +1,4 @@
-package tn.MedicaSud.app.client.gui;
+package GUI;
 
 import javafx.geometry.Pos;
 import javafx.scene.paint.Color;
@@ -9,11 +9,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import tn.MedicaSud.entities.Intervention;
-import tn.MedicaSud.services.InterventionServicesRemote;
+import Entities.Intervention;
+import Services.InterventionServices;
+import java.sql.SQLException;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -39,35 +41,37 @@ public class FullCalendarView {
    private List<String> descriptions= new ArrayList<String>();
    private List<String> descriptionsSansPeriode= new ArrayList<String>();
    Utilites utilities= new Utilites();
+    InterventionServices is= new InterventionServices();
 
     /**
      * Create a calendar view
      * @param yearMonth year month to create the calendar of
      * @throws NamingException 
      */
-    public FullCalendarView(YearMonth yearMonth)  {
-    	try {
-			utilities.context= new InitialContext();
-			utilities.interventionServicesRemote= (InterventionServicesRemote) utilities.context.lookup(utilities.interventionRemote);
-			interventions=utilities.interventionServicesRemote.findAll();
+    
+    public FullCalendarView(YearMonth yearMonth) throws SQLException  {
+                        
+			interventions=is.displayAll();
+                       
 			taDates.clear();
 			for (Intervention intervention : interventions) {
+                             System.out.println(interventions.size());
+                             System.out.println(intervention.getPeriode());
 				if(intervention.getPeriode()!=0)
-				{taDates.add(intervention.getDateIntervention());
+				{   
+                                    taDates.add(intervention.getDateIntervention().toLocalDate());
 				periodes.add(intervention.getPeriode());
 				descriptions.add(intervention.getDescription());}
 				else
 				{
-					DatesSansPeriode.add(intervention.getDateIntervention());
+					DatesSansPeriode.add(intervention.getDateIntervention().toLocalDate());
 					descriptionsSansPeriode.add(intervention.getDescription());}
 				}
 
 			
 		
 	     
-		} catch (NamingException e1) {
 		
-		}
 
         
         currentYearMonth = yearMonth;

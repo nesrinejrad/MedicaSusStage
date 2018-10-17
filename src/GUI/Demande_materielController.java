@@ -3,16 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tn.MedicaSud.app.client.gui;
+package GUI;
 
 import GUI.Accueil_clientController;
-import tn.MedicaSud.app.client.gui.Utilites;
-import tn.MedicaSud.entities.Demande;
-import tn.MedicaSud.entities.EtatTicket;
-import tn.MedicaSud.entities.Materiel;
-import tn.MedicaSud.entities.StatutTicket;
-import tn.MedicaSud.entities.TypeMateriel;
-import tn.MedicaSud.services.DemandeServicesRemote;
+import GUI.Utilites;
+import Entities.Demande;
+import Entities.EtatTicket;
+import Entities.Materiel;
+import Entities.StatutTicket;
+import Entities.TypeMateriel;
 
 import java.io.IOException;
 import java.net.URL;
@@ -41,6 +40,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import GUI.Utilites;
+import Services.DemandeService;
 
 /**
  * FXML Controller class
@@ -91,6 +92,7 @@ public class Demande_materielController implements Initializable {
     private ObservableList<String> etatData=FXCollections.observableArrayList();
     private ObservableList<String> typeMterielData=FXCollections.observableArrayList();
     Utilites utilites= new Utilites();
+    DemandeService ds = new DemandeService();
 
 
     /**
@@ -109,7 +111,7 @@ public class Demande_materielController implements Initializable {
   	   img = new Image("Assets/icons8-ajouter-32.png");
   	   ImgNouveauTicket.setImage(img);
   	   
-  	   img = new Image("Assets/Demande.png");
+  	   img = new Image("Assets/demande.png");
   	   ImgDemandeMateriel.setImage(img);
   	   
   	   img = new Image("Assets/icons8-editer-le-fichier-80.png");
@@ -165,7 +167,7 @@ public class Demande_materielController implements Initializable {
     
     @FXML
     private void EnvoyerDemandeMaterielAction(ActionEvent event) throws IOException, NamingException {
-    	String msg="";
+   	String msg="";
     	if (typeMateriel.getValue()==null) {
     		msg="type materiel non désigné!";
     	    utilites.GenererAlerte(msg);
@@ -187,11 +189,10 @@ public class Demande_materielController implements Initializable {
     	demande.setDateDemande(Date.valueOf(java.time.LocalDate.now()));
     	demande.setDescription(description.getText());
     	demande.setTypeMateriel(TypeMateriel.valueOf((String) typeMateriel.getValue()));
+        demande.setDateDemande(Date.valueOf(java.time.LocalDate.now()));
     	demande.setStatus(StatutTicket.valueOf((String) status.getValue()));
-        demande.setUtilisateur(Accueil_clientController.utilisateurConnecte);
-        utilites.context= new InitialContext();
-        utilites.demandeServicesRemote=(DemandeServicesRemote) utilites.context.lookup(utilites.demandeRemote);
-        utilites.demandeServicesRemote.save(demande);
+        demande.setUtilisateur_code(Accueil_clientController.utilisateurConnecte.getCode());
+        ds.ajouterFourniseur(demande);
     	utilites.GenerertAletrtOk("Envoie effectué");
     	 utilites.newStage(Deconnexion, "demande_materiel.fxml", "demande matériel");
     	

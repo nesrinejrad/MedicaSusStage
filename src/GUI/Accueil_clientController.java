@@ -7,6 +7,7 @@ package GUI;
 
 
 
+import Entities.Utilisateur;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXToggleButton;
 import java.io.IOException;
@@ -31,8 +32,9 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.stage.Stage;
-import tn.MedicaSud.app.client.gui.ConsulterDemandeMaterielController;
-import tn.MedicaSud.app.client.gui.Utilites;
+import GUI.ConsulterDemandeMaterielController;
+import GUI.Utilites;
+import java.sql.SQLException;
 
 /**
  * FXML Controller class
@@ -91,23 +93,25 @@ public class Accueil_clientController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
     	utilites.backgroundImage(imageMedicaSud);
           
-     	   Image img = new Image("Assets/icons8-voir-les-détails-50.png");
+     	   Image img = new Image("Assets/icons8-paquet-50.png");
      	   ImgConsulterTickets.setImage(img);
      	   
-     	    img = new Image("Assets/icons8-poste-de-travail-64.png");
+     	    img = new Image("Assets/materil.png");
    	   ImgConsulterMateriel.setImage(img);
    	   
-   	   img = new Image("Assets/icons8-ajouter-32.png");
+   	   img = new Image("Assets/icons8-plus-30.png");
    	   ImgNouveauTicket.setImage(img);
    	   
-   	   img = new Image("Assets/demandeblanche.png");
+   	   img = new Image("Assets/demande.png");
    	   ImgNouveauMateriel.setImage(img);;
    	   
-   	   img = new Image("Assets/icons8-editer-le-fichier-80.png");
+   	   img = new Image("Assets/EDITER.png");
    	   ImgChangerMotDePasse.setImage(img);
    	   
-   	   img = new Image("Assets/icons8-connexion-filled-50.png");
+   	   img = new Image("Assets/deconnexion.png");
    	   imgDeconnexion.setImage(img);
+           img = new Image("Assets/icons8-lire-un-message-50.png");
+           ImgConsulterDemande.setImage(img);
     }    
 
     @FXML
@@ -135,7 +139,7 @@ public class Accueil_clientController implements Initializable {
     }
 
     @FXML
-    private void ConsulterDemandeAction(MouseEvent event) throws IOException {
+    private void ConsulterDemandeAction(MouseEvent event) throws IOException, SQLException {
     	ConsulterDemandeMaterielController consulterDemandeMaterielController= new ConsulterDemandeMaterielController();
     	FXMLLoader loader=new FXMLLoader(getClass().getResource("ConsulterDemandeMateriel.fxml"));
         Parent root = (Parent) loader.load();

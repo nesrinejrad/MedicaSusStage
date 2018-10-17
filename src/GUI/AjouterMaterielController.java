@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tn.MedicaSud.app.client.gui;
+package GUI;
 
 import com.jfoenix.controls.JFXButton;
 
@@ -12,7 +12,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 
-import Utilities.SendMail;
+import Utiles.SendMail;
 
 
 import java.io.IOException;
@@ -23,9 +23,6 @@ import java.util.ResourceBundle;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-
-import org.hibernate.internal.util.xml.FilteringXMLEventReader;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -37,15 +34,20 @@ import javafx.scene.control.*;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import tn.MedicaSud.entities.Fournisseur;
-import tn.MedicaSud.entities.Materiel;
-import tn.MedicaSud.entities.Role;
-import tn.MedicaSud.entities.StatutTicket;
-import tn.MedicaSud.entities.TypeMateriel;
-import tn.MedicaSud.entities.Utilisateur;
-import tn.MedicaSud.services.FournisseurServicesRemote;
-import tn.MedicaSud.services.MaterielServicesRemote;
-import tn.MedicaSud.services.UtilisateurServicesRemote;
+import Entities.Fournisseur;
+import Entities.Materiel;
+import Entities.Role;
+import Entities.StatutTicket;
+import Entities.TypeMateriel;
+import Entities.Utilisateur;
+import Services.FournisseurService;
+import Services.MaterielService;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * FXML Controller class
@@ -78,6 +80,10 @@ public class AjouterMaterielController implements Initializable {
     Utilites utilities= new Utilites();
     private ObservableList<String> typeMterielData=FXCollections.observableArrayList();
     private ObservableList<Fournisseur> fournissursData=FXCollections.observableArrayList();
+    MaterielService ms = new MaterielService();
+    FournisseurService fs= new FournisseurService();
+    
+    
 
     /**
      * Initializes the controller class.
@@ -90,26 +96,30 @@ public class AjouterMaterielController implements Initializable {
    	}
      	   TypeMaterielC.setItems(typeMterielData);
      	   
-     	   try {
-			utilities.context= new InitialContext();
-			utilities.fournisseurServicesRemote= (FournisseurServicesRemote) utilities.context.lookup(utilities.FournisseurRemote);
+     	  
 			List<Fournisseur> fournisseurs= new ArrayList<Fournisseur>();
-			fournisseurs= utilities.fournisseurServicesRemote.findAll();
+                  try {
+                      fournisseurs= fs.displayAll();
+                  } catch (SQLException ex) {
+                      Logger.getLogger(AjouterMaterielController.class.getName()).log(Level.SEVERE, null, ex);
+                  }
 			fournissursData=FXCollections.observableArrayList(fournisseurs);
 			FournisseurMateriel.setItems(fournissursData);
-		} catch (NamingException e) {
-			
-		}
+		} 
      	   
      	   
-     	   
-    }    
+     	   public static final LocalDate LOCAL_DATE (String dateString){
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    LocalDate localDate = LocalDate.parse(dateString, formatter);
+    return localDate;
+}
+       
     public void RemplirCahmp(Materiel materiel)
     {	
-    	IdentifiantMateriel.setText(materiel.getId());
+       IdentifiantMateriel.setText(materiel.getId());
     	IdentifiantMateriel.setVisible(false);
     	idLabel.setVisible(false);
-    	DateAchatMateriel.setValue(materiel.getDateAchat());
+    	//DateAchatMateriel.setValue(materiel.getDateAchat());
     	DescriptionMateriel.setText(materiel.getReference());
     	DureeGarantieMateriel.setText(String.valueOf(materiel.getDureeGarantie()));
     	MarqueMateriel.setText(materiel.getMarque());
@@ -117,36 +127,42 @@ public class AjouterMaterielController implements Initializable {
     }
 
     @FXML
-    private void EnregistrerMateriel(ActionEvent event) throws NamingException {
+    private void EnregistrerMateriel(ActionEvent event) throws NamingException, SQLException {
     	Materiel materiel= new Materiel();
     	materiel.setId(IdentifiantMateriel.getText());
     	materiel.setDureeGarantie(Integer.valueOf(DureeGarantieMateriel.getText()));
-    	materiel.setFournisseur(FournisseurMateriel.getValue());
+    	materiel.setFournisseur(String.valueOf(FournisseurMateriel.getValue()));
     	materiel.setMarque(MarqueMateriel.getText());
     	materiel.setReference(DescriptionMateriel.getText());
     	materiel.setTypeMateriel(TypeMateriel.valueOf(TypeMaterielC.getValue()));
-    	materiel.setDateAchat(DateAchatMateriel.getValue());
-    	utilities.context= new InitialContext();
-    	utilities.materielServicesRemote=(MaterielServicesRemote) utilities.context.lookup(utilities.materielRemote);
-    	utilities.materielServicesRemote.update(materiel);
+    	materiel.setDateAchat(Date.valueOf(DateAchatMateriel.getValue()));
+        Materiel m1 =ms.rechercherMateriel(materiel.getId());
+        if (m1==null)
+        {ms.ajouterMateriel(materiel);
+        System.out.println(materiel.toString());
     	utilities.closeStage(Enregistrer);
-    	utilities.GenerertAletrtOk("materiel ajouté avec succées");
+    	utilities.GenerertAletrtOk("materiel ajouté avec succées");}
+        else
+        {
+            ms.modifierMAteriel(materiel);
+        System.out.println(materiel.toString());
+    	utilities.closeStage(Enregistrer);
+    	utilities.GenerertAletrtOk("materiel ajouté avec succées");}
+        
     }
 
     @FXML
-    private void AffecterUtilisateurMAteriel(ActionEvent event) throws NamingException, IOException {
+    private void AffecterUtilisateurMAteriel(ActionEvent event) throws NamingException, IOException, SQLException {
     	Materiel materiel= new Materiel();
     	materiel.setId(IdentifiantMateriel.getText());
     	materiel.setDureeGarantie(Integer.valueOf(DureeGarantieMateriel.getText()));
-    	materiel.setFournisseur(FournisseurMateriel.getValue());
+    	materiel.setFournisseur(String.valueOf(FournisseurMateriel.getValue()));
     	materiel.setMarque(MarqueMateriel.getText());
     	materiel.setReference(DescriptionMateriel.getText());
     	materiel.setTypeMateriel(TypeMateriel.valueOf(TypeMaterielC.getValue()));
-    	materiel.setDateAchat(DateAchatMateriel.getValue());
-    	utilities.context= new InitialContext();
-    	utilities.materielServicesRemote=(MaterielServicesRemote) utilities.context.lookup(utilities.materielRemote);
-    	utilities.materielServicesRemote.update(materiel);
-    	utilities.closeStage(Enregistrer);
+    	materiel.setDateAchat(Date.valueOf(DateAchatMateriel.getValue()));
+        ms.modifierMAteriel(materiel);    
+        utilities.closeStage(Enregistrer);
     	AffecterUtilisateurMaterielController affecterUtilisateurMaterielController= new AffecterUtilisateurMaterielController();
     	affecterUtilisateurMaterielController.materiel=materiel;;
     	FXMLLoader loader=new FXMLLoader(getClass().getResource("AffecterUtilisateurMateriel.fxml"));

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tn.MedicaSud.app.client.gui;
+package GUI;
 
 import com.jfoenix.controls.JFXButton;
 
@@ -11,7 +11,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 
-import Utilities.SendMail;
+import Utiles.SendMail;
 
 import java.io.IOException;
 import java.net.URL;
@@ -27,13 +27,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
-import javassist.tools.framedump;
-import tn.MedicaSud.entities.Fournisseur;
-import tn.MedicaSud.entities.Role;
-import tn.MedicaSud.entities.StatutTicket;
-import tn.MedicaSud.entities.Utilisateur;
-import tn.MedicaSud.services.FournisseurServicesRemote;
-import tn.MedicaSud.services.UtilisateurServicesRemote;
+import Entities.Fournisseur;
+import Entities.Role;
+import Entities.StatutTicket;
+import Entities.Utilisateur;
+import Services.FournisseurService;
 
 /**
  * FXML Controller class
@@ -57,7 +55,8 @@ public class AjouterFournisseurController implements Initializable {
 	    @FXML
 	    private JFXButton Enregistrer;
 	    Utilites utilities= new Utilites();
-
+            FournisseurService fs= new FournisseurService();
+            boolean modif=false;
 	    /**
 	     * Initializes the controller class.
 	     */
@@ -68,6 +67,7 @@ public class AjouterFournisseurController implements Initializable {
 	    public void modifFournisseur(Fournisseur fournisseur1) throws NamingException
 	    {
 	    	   idLabel.setVisible(false);
+                      this.modif=true;
 		        IdentifiantFournisseur.setVisible(false);
 		        IdentifiantFournisseur.setText(fournisseur1.getId());
 		        NomFournisseur.setText(fournisseur1.getNom());
@@ -93,10 +93,17 @@ public class AjouterFournisseurController implements Initializable {
 	    	fournisseur.setAdresse(AdresseFournisseur.getText());
 	    	fournisseur.setNom(NomFournisseur.getText());
 	    	fournisseur.setTelephone(TéléphoneFournisseur.getText());
-	    	utilities.context= new InitialContext();
-	    	utilities.fournisseurServicesRemote= (FournisseurServicesRemote) utilities.context.lookup(utilities.FournisseurRemote);
-	    	utilities.fournisseurServicesRemote.update(fournisseur);
+                if(modif==false)
+                {fs.ajouterFourniseur(fournisseur);
 	    	utilities.closeStage(Enregistrer);
-	    	utilities.GenerertAletrtOk("fournisseur ajouté avec succés");
+	    	utilities.GenerertAletrtOk("fournisseur ajouté avec succés");}
+                else
+                {
+                    fs.modifierFournisseur(fournisseur);
+                    	    	utilities.closeStage(Enregistrer);
+                                	    	utilities.GenerertAletrtOk("fournisseur modifié avec succés");}
+
+
+                
 	    }
 }

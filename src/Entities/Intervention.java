@@ -6,6 +6,7 @@
 package Entities;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 /**
  *
@@ -17,18 +18,17 @@ public class Intervention {
 	private Date dateIntervention;
 	private String description;
 	private Integer periode;
-	private EtatTicket etatIntervention;
-	public EtatTicket getEtatIntervention() {
+	private EtatTicket etatIntervention;	
+	private String materiel_id;	
+	private int  ticket_id;
+
+        
+          public EtatTicket getEtatIntervention() {
 		return etatIntervention;
 	}
 	public void setEtatIntervention(EtatTicket etatIntervention) {
 		this.etatIntervention = etatIntervention;
 	}
-	
-	private Materiel materiel;
-	
-	private Ticket  ticket;
-	private static final long serialVersionUID = 1L;
 	public String getId() {
 		return id;
 	}
@@ -47,17 +47,17 @@ public class Intervention {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public Materiel getMateriel() {
-		return materiel;
+	public String getMateriel() {
+		return materiel_id;
 	}
-	public void setMateriel(Materiel materiel) {
-		this.materiel = materiel;
+	public void setMateriel(String materiel) {
+		this.materiel_id = materiel;
 	}
-	public Ticket getTicket() {
-		return ticket;
+	public int getTicket() {
+		return ticket_id;
 	}
-	public void setTicket(Ticket ticket) {
-		this.ticket = ticket;
+	public void setTicket(int ticket) {
+		this.ticket_id = ticket;
 	}
 	public Intervention(String id, Date dateIntervention, String description) {
 		super();

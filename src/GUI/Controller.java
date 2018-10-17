@@ -1,4 +1,4 @@
-package tn.MedicaSud.app.client.gui;
+package GUI;
 
 import com.jfoenix.controls.JFXButton;
 
@@ -21,8 +21,11 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import tn.MedicaSud.entities.Intervention;
-import tn.MedicaSud.services.InterventionServicesRemote;
+import Entities.Intervention;
+import Services.InterventionServices;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Controller implements  Initializable {
 
@@ -46,7 +49,7 @@ public class Controller implements  Initializable {
     @FXML
     private JFXButton Deconnexion;
     Utilites utilities= new Utilites();
-
+    InterventionServices is= new InterventionServices();
         @Override
     public void initialize(URL url, ResourceBundle rb) {
         	utilities.backgroundImage(imageMedicaSud);
@@ -61,12 +64,10 @@ public class Controller implements  Initializable {
             List<Intervention> intervention= new ArrayList<Intervention>();
             List<Integer> periodes= new ArrayList<Integer>();
             try {
-				utilities.context= new InitialContext();
-				utilities.interventionServicesRemote= (InterventionServicesRemote) utilities.context.lookup(utilities.interventionRemote);
-				intervention=utilities.interventionServicesRemote.findAll();
-			} catch (NamingException e) {
-			
-			}
+				intervention=is.displayAll();
+			} catch (SQLException ex) {
+                        Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+                    }
             String date2="2018-08-16";
             LocalDate ldate2= LocalDate.parse(date2);
             {
@@ -95,7 +96,9 @@ public class Controller implements  Initializable {
 
     @FXML
     private void ListeInterventionsAction(ActionEvent event) throws IOException {
-    	utilities.newStage(Accueil, "ListeInterventions.fxml", "liste des interventions");   }
+        
+    	utilities.newStage(Accueil, "ListeInterventions.fxml", "liste des interventions"); 
+    }
 
     @FXML
     private void AccueilAction(ActionEvent event) throws IOException {
